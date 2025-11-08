@@ -9,7 +9,11 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "setup-db": "node setup-database-direct.js"
+    "setup-db": "node setup-database-direct.js",
+    "sync:lovable": "node sync-lovable-bidirectional.js watch",
+    "sync:push": "node sync-lovable-bidirectional.js push",
+    "sync:pull": "node sync-lovable-bidirectional.js pull",
+    "sync:manual": "node sync-lovable-bidirectional.js sync"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
