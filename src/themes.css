@@ -1,93 +1,124 @@
-/* Theme Design 2 Light - Modern Light Blue */
+/* Theme Design 2 - Modern Minimal Design (مطابق لـ miccoach-lab) */
 .theme-design2 {
-  /* Navy Blue Primary - من الصورة */
-  --primary: 216 45% 28%; /* #2C4A6B - أزرق داكن */
+  /* Primary - أزرق داكن حديث */
+  --primary: 220 70% 50%; /* #3366FF - أزرق نابض بالحياة */
   --primary-foreground: 0 0% 100%;
-  --primary-glow: 216 45% 38%;
+  --primary-glow: 220 70% 60%;
   
-  /* Light backgrounds - very light blue-gray */
-  --background: 220 25% 97%; /* #F5F7FA */
-  --foreground: 216 45% 20%;
+  /* Light backgrounds - خلفية بيضاء نظيفة */
+  --background: 0 0% 100%; /* #FFFFFF - أبيض نقي */
+  --foreground: 220 20% 20%; /* #333344 - رمادي داكن */
   
-  /* Card colors - pure white */
+  /* Card colors - بطاقات بيضاء مع ظل خفيف */
   --card: 0 0% 100%;
-  --card-foreground: 216 45% 20%;
+  --card-foreground: 220 20% 20%;
   
-  /* Popover colors - white */
+  /* Popover colors */
   --popover: 0 0% 100%;
-  --popover-foreground: 216 45% 20%;
+  --popover-foreground: 220 20% 20%;
   
-  /* Secondary - white/light gray */
-  --secondary: 220 20% 96%;
-  --secondary-foreground: 216 45% 20%;
+  /* Secondary - رمادي فاتح */
+  --secondary: 220 15% 96%; /* #F5F6F7 - رمادي فاتح جداً */
+  --secondary-foreground: 220 20% 20%;
   
-  /* Muted colors */
-  --muted: 220 15% 92%;
-  --muted-foreground: 216 15% 50%;
+  /* Muted colors - رمادي خفيف */
+  --muted: 220 10% 95%; /* #F2F3F4 */
+  --muted-foreground: 220 10% 50%;
   
-  /* Accent colors - darker blue */
-  --accent: 216 45% 28%;
+  /* Accent - أزرق فاتح */
+  --accent: 220 70% 50%;
   --accent-foreground: 0 0% 100%;
   
-  /* Destructive colors */
-  --destructive: 0 84% 60%;
+  /* Destructive - أحمر */
+  --destructive: 0 70% 55%;
   --destructive-foreground: 0 0% 100%;
   
-  /* Border and input */
-  --border: 220 15% 88%;
-  --input: 220 15% 92%;
-  --ring: 216 45% 28%;
+  /* Border and input - حدود رمادية خفيفة جداً */
+  --border: 220 10% 90%; /* #E5E6E7 */
+  --input: 220 10% 95%;
+  --ring: 220 70% 50%;
   
-  /* Radius */
-  --radius: 0.625rem;
+  /* Radius - زوايا دائرية حديثة */
+  --radius: 0.75rem; /* 12px - زوايا أكثر دائرية */
   
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, hsl(216 45% 28%), hsl(216 45% 38%));
-  --gradient-hero: linear-gradient(180deg, hsl(216 45% 20% / 0.5), hsl(216 45% 28% / 0.7));
+  /* Gradients - تدرجات حديثة */
+  --gradient-primary: linear-gradient(135deg, hsl(220 70% 50%), hsl(240 70% 60%));
+  --gradient-hero: linear-gradient(135deg, hsl(220 70% 45%), hsl(240 70% 55%));
   --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 10% 98%));
+  --gradient-luxury: linear-gradient(135deg, hsl(220 70% 50%), hsl(240 70% 60%), hsl(260 70% 55%));
   
-  /* Shadows */
-  --shadow-elegant: 0 2px 12px -2px hsl(216 45% 28% / 0.08);
-  --shadow-luxury: 0 4px 24px -4px hsl(216 45% 28% / 0.12);
-  --shadow-card: 0 1px 8px -1px hsl(220 20% 40% / 0.06);
+  /* Shadows - ظلال ناعمة وحديثة */
+  --shadow-elegant: 0 4px 20px -4px hsl(220 20% 40% / 0.10);
+  --shadow-luxury: 0 8px 40px -8px hsl(220 20% 40% / 0.15);
+  --shadow-card: 0 2px 8px -2px hsl(220 10% 50% / 0.08);
   
-  /* Status Colors */
-  --status-new: 210 100% 50%;
-  --status-pending: 30 100% 50%;
-  --status-confirmed: 142 71% 45%;
-  --status-cancelled: 0 84% 60%;
+  /* Status Colors - ألوان حالة حديثة */
+  --status-new: 220 70% 50%; /* أزرق */
+  --status-pending: 40 95% 55%; /* برتقالي */
+  --status-confirmed: 140 60% 45%; /* أخضر */
+  --status-cancelled: 0 70% 55%; /* أحمر */
+  
+  /* Sidebar */
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 220 20% 20%;
+  --sidebar-accent: 220 10% 95%;
+  --sidebar-accent-foreground: 220 20% 20%;
+  --sidebar-border: 220 10% 90%;
+  --sidebar-ring: 220 70% 50%;
 }
 
-/* Theme Design 2 Dark - Modern Dark Blue */
-.theme-design2.dark {
-  /* Dark mode - deep navy background */
-  --background: 216 50% 15%; /* #1A2B4A */
+/* Theme Design 2 Dark - Modern Minimal Dark Mode */
+.theme-design2-dark {
+  /* Dark backgrounds - داكن حديث */
+  --background: 220 25% 10%; /* #18191B - داكن جداً */
   --foreground: 0 0% 98%;
   
-  --card: 216 45% 20%;
+  /* Cards - داكن مع تباين خفيف */
+  --card: 220 20% 15%; /* #1F2123 */
   --card-foreground: 0 0% 98%;
   
-  --popover: 216 45% 20%;
+  --popover: 220 20% 15%;
   --popover-foreground: 0 0% 98%;
   
-  --primary: 0 0% 100%;
-  --primary-foreground: 216 45% 20%;
+  /* Primary - أزرق فاتح للوضع الداكن */
+  --primary: 220 70% 60%; /* #5588FF */
+  --primary-foreground: 0 0% 100%;
+  --primary-glow: 220 70% 70%;
   
-  --secondary: 216 40% 25%;
+  /* Secondary */
+  --secondary: 220 15% 20%;
   --secondary-foreground: 0 0% 98%;
   
-  --muted: 216 35% 22%;
-  --muted-foreground: 216 15% 70%;
+  /* Muted */
+  --muted: 220 15% 20%;
+  --muted-foreground: 220 10% 70%;
   
-  --accent: 0 0% 100%;
-  --accent-foreground: 216 45% 20%;
+  /* Accent */
+  --accent: 220 70% 60%;
+  --accent-foreground: 0 0% 100%;
   
-  --border: 216 30% 28%;
-  --input: 216 30% 25%;
-  --ring: 0 0% 100%;
+  /* Borders */
+  --border: 220 15% 25%;
+  --input: 220 15% 20%;
+  --ring: 220 70% 60%;
   
-  --gradient-primary: linear-gradient(135deg, hsl(216 45% 20%), hsl(216 45% 28%));
-  --gradient-hero: linear-gradient(180deg, hsl(216 50% 12%), hsl(216 50% 18%));
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(220 70% 60%), hsl(240 70% 70%));
+  --gradient-hero: linear-gradient(135deg, hsl(220 70% 40%), hsl(240 70% 50%));
+  --gradient-card: linear-gradient(180deg, hsl(220 20% 15%), hsl(220 15% 18%));
+  
+  /* Shadows */
+  --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.30);
+  --shadow-luxury: 0 8px 40px -8px hsl(0 0% 0% / 0.40);
+  --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.20);
+  
+  /* Sidebar */
+  --sidebar: 220 20% 15%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-accent: 220 15% 20%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 220 15% 25%;
+  --sidebar-ring: 220 70% 60%;
 }
 
 /* Theme Design 3 - Reserved for future use */

@@ -68,3 +68,4 @@ C:\Users\xmd55\Desktop\in33.in\home\dist
 - تأكد من أن FTP مفعل في cPanel
 - جرب استخدام File Manager بدلاً من FTP
 
+

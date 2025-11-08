@@ -36,3 +36,4 @@ npx supabase gen types typescript --project-id cpgwnqiywsawepdkccpj > src/integr
 - **Project URL**: `https://cpgwnqiywsawepdkccpj.supabase.co`
 - **ملف الأنواع**: `src/integrations/supabase/types.ts`
 
+

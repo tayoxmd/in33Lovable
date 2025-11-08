@@ -77,3 +77,4 @@ $function$;
 -- Grant execute permission to authenticated users
 GRANT EXECUTE ON FUNCTION public.create_system_backup() TO authenticated;
 
+
