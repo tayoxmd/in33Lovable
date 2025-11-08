@@ -1382,7 +1382,7 @@ export default function EmailSettings() {
                                 ...newCustomFolder,
                                 id: `folder-${Date.now()}`
                               }]);
-                              setNewCustomFolder({ name: "", name_en: "", color: "#3b82f6", icon: "Mail" });
+                              setNewCustomFolder({ name: "", name_en: "", color: "#3b82f6" });
                               toast({
                                 title: t({ ar: "تم الإضافة", en: "Added" }),
                                 description: t({ ar: "تم إضافة الملف بنجاح", en: "Folder added successfully" }),

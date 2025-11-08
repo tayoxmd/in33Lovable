@@ -252,6 +252,9 @@ export default function Email() {
         .order('date', { ascending: false })
         .limit(500);
 
+      // تحويل البيانات من قاعدة البيانات إلى تنسيق Email
+      let formattedEmails: Email[] = [];
+      
       if (error) {
         console.error('Error fetching emails:', error);
         // إذا كان الخطأ بسبب عدم وجود الجدول، اعرض رسالة واضحة
@@ -264,8 +267,7 @@ export default function Email() {
         }
         setEmails([]);
       } else {
-        // تحويل البيانات من قاعدة البيانات إلى تنسيق Email
-        const formattedEmails: Email[] = (data || []).map((e: any) => ({
+        formattedEmails = (data || []).map((e: any) => ({
           id: e.id,
           from: e.from_email || e.from,
           to: e.to_email || e.to,
@@ -288,68 +290,28 @@ export default function Email() {
           const { data: imapEmails, error: imapError } = await supabase.functions.invoke('fetch-emails', {
             body: {
               account_id: currentAccountId,
-              imap_settings: currentAccount.incoming,
-              smtp_settings: currentAccount.outgoing
             }
           });
 
           if (!imapError && imapEmails && Array.isArray(imapEmails)) {
-            // حفظ البريد المستلم في قاعدة البيانات
-            const emailsToSave = imapEmails.map((e: any) => ({
-              account_id: currentAccountId,
-              from_email: e.from,
-              to_email: e.to,
+            const formattedNewEmails: Email[] = imapEmails.map((e: any) => ({
+              id: e.id || `imap-${Date.now()}-${Math.random()}`,
+              from: e.from_email || e.from,
+              to: e.to_email || e.to,
               subject: e.subject,
               body: e.body,
               folder: e.folder || 'inbox',
               read: e.read || false,
               starred: e.starred || false,
+              date: e.date || e.created_at,
               attachments: e.attachments || [],
-              date: e.date || new Date().toISOString()
+              filterIds: e.filter_ids || []
             }));
-
-            // حفظ في قاعدة البيانات
-            const { data: savedEmails, error: saveError } = await supabase
-              .from('emails')
-              .upsert(emailsToSave, {
-                onConflict: 'id',
-                ignoreDuplicates: false
-              })
-              .select();
-
-            if (saveError) {
-              console.warn('Could not save emails to database:', saveError);
-              // إذا كان الخطأ بسبب عدم وجود الجدول، اعرض رسالة واضحة
-              if (saveError.message?.includes('does not exist') || saveError.message?.includes('schema cache')) {
-                toast({
-                  title: t({ ar: "خطأ في قاعدة البيانات", en: "Database Error" }),
-                  description: t({ ar: "جدول البريد غير موجود. يرجى إنشاء الجدول من إعدادات Supabase", en: "Emails table does not exist. Please create the table from Supabase settings" }),
-                  variant: "destructive",
-                });
-              }
-            }
-
-            // دمج البريد المستلم مع البريد المحفوظ
-            if (savedEmails && savedEmails.length > 0) {
-              const formattedNewEmails: Email[] = savedEmails.map((e: any) => ({
-                id: e.id,
-                from: e.from_email || e.from,
-                to: e.to_email || e.to,
-                subject: e.subject,
-                body: e.body,
-                folder: e.folder || 'inbox',
-                read: e.read || false,
-                starred: e.starred || false,
-                date: e.date || e.created_at,
-                attachments: e.attachments || [],
-                filterIds: e.filter_ids || []
-              }));
-              
-              const existingIds = new Set(formattedEmails.map(e => e.id));
-              const newEmails = formattedNewEmails.filter(e => !existingIds.has(e.id));
-              if (newEmails.length > 0) {
-                setEmails([...formattedEmails, ...newEmails]);
-              }
+            
+            const existingIds = new Set(formattedEmails.map(e => e.id));
+            const newEmails = formattedNewEmails.filter(e => !existingIds.has(e.id));
+            if (newEmails.length > 0) {
+              setEmails([...formattedEmails, ...newEmails]);
             }
           }
         }
@@ -1249,7 +1211,7 @@ export default function Email() {
             <Button variant="outline" onClick={() => setIsComposeOpen(false)}>
               {t({ ar: 'إلغاء', en: 'Cancel' })}
             </Button>
-            <Button onClick={handleSendEmail} className="gap-2">
+            <Button onClick={() => handleSendEmail()} className="gap-2">
               <Send className="w-4 h-4" />
               {t({ ar: 'إرسال', en: 'Send' })}
             </Button>
