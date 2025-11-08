@@ -1,280 +1,5 @@
 [
   {
-    "timestamp": "2025-11-08T02:48:12.669Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:48:30.206Z",
-    "action": "FILE_CHANGE",
-    "details": "sync-lovable-bidirectional.js"
-  },
-  {
-    "timestamp": "2025-11-08T02:48:39.449Z",
-    "action": "PUSH",
-    "details": "Pushed updates to GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:48:42.837Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:49:12.074Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:49:23.969Z",
-    "action": "FILE_CHANGE",
-    "details": "BACKUP_PATHS_CONFIG.md"
-  },
-  {
-    "timestamp": "2025-11-08T02:49:32.886Z",
-    "action": "PUSH",
-    "details": "Pushed updates to GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:49:42.218Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:50:12.178Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:50:42.298Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:51:12.592Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:51:42.206Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:52:11.556Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:52:12.065Z",
-    "action": "FILE_CHANGE",
-    "details": "BACKUP_PATHS_SUMMARY.md"
-  },
-  {
-    "timestamp": "2025-11-08T02:52:20.877Z",
-    "action": "PUSH",
-    "details": "Pushed updates to GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:52:41.760Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:53:11.698Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:53:41.678Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:54:11.951Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:54:41.184Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:55:11.282Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:55:41.331Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:56:11.286Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:56:41.343Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:57:12.387Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:57:30.095Z",
-    "action": "FILE_CHANGE",
-    "details": "src\\pages\\SiteSettings.tsx"
-  },
-  {
-    "timestamp": "2025-11-08T02:57:40.110Z",
-    "action": "PUSH",
-    "details": "Pushed updates to GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:57:42.338Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:58:11.974Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:58:12.859Z",
-    "action": "FILE_CHANGE",
-    "details": "src\\pages\\SiteSettings.tsx"
-  },
-  {
-    "timestamp": "2025-11-08T02:58:22.153Z",
-    "action": "PUSH",
-    "details": "Pushed updates to GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:58:42.110Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:59:11.792Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T02:59:41.719Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:00:11.543Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:00:41.618Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:01:11.481Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:01:41.910Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:02:11.893Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:02:41.786Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:03:11.668Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:03:41.801Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:04:11.669Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:04:41.749Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:05:11.789Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:05:41.581Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:06:11.790Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:06:41.987Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:07:11.852Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:07:41.774Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:08:11.938Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:08:41.721Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:09:12.254Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:09:42.475Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
-    "timestamp": "2025-11-08T03:10:15.343Z",
-    "action": "PULL",
-    "details": "Pulled updates from GitHub"
-  },
-  {
     "timestamp": "2025-11-08T03:10:42.115Z",
     "action": "PULL",
     "details": "Pulled updates from GitHub"
@@ -498,5 +223,280 @@
     "timestamp": "2025-11-08T03:27:37.911Z",
     "action": "FILE_CHANGE",
     "details": "FIX_BACKUP_FUNCTION.md"
+  },
+  {
+    "timestamp": "2025-11-08T03:27:44.359Z",
+    "action": "PUSH_ERROR",
+    "details": "Command failed: git commit -m \"Auto-sync: 2025-11-08T03:27:43.948Z\""
+  },
+  {
+    "timestamp": "2025-11-08T03:27:47.962Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:28:16.977Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:28:46.476Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:29:16.335Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:29:46.739Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:30:23.772Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:30:47.238Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:31:17.211Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:31:46.700Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:32:16.845Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:32:47.196Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:33:17.067Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:33:46.999Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:34:17.103Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:34:47.634Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:35:16.632Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:35:47.170Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:36:16.523Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:36:46.497Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:37:16.415Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:37:46.564Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:38:16.383Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:38:46.652Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:39:16.665Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:43:27.671Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:43:50.345Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:44:20.316Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:44:49.943Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:45:20.743Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:45:51.719Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:46:20.884Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:46:53.008Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:47:27.429Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:47:50.144Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:48:20.546Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:48:49.249Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:49:19.141Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:49:56.416Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:50:18.854Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:50:48.839Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:51:19.004Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:51:49.362Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:52:18.966Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:52:49.088Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:53:18.951Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:53:49.317Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:54:19.050Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:54:49.309Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:56:09.216Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:56:35.619Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:57:05.831Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:57:35.519Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:58:05.248Z",
+    "action": "PULL",
+    "details": "Pulled updates from GitHub"
+  },
+  {
+    "timestamp": "2025-11-08T03:58:23.833Z",
+    "action": "FILE_CHANGE",
+    "details": "package-lock.json"
   }
 ]
