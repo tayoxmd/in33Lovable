@@ -2,32 +2,16 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_URL = "https://cpgwnqiywsawepdkccpj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwZ3ducWl5d3Nhd2VwZGtjY3BqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTU2MzgsImV4cCI6MjA3ODEzMTYzOH0.ONAuHNg9H4WMSudDaEoTyfXhnU2vkWXsSpadlNeAXzE";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-// Create a fallback client if env vars are missing (for development)
-const fallbackUrl = 'https://placeholder.supabase.co';
-const fallbackKey = 'placeholder-key';
-
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  console.warn('Missing Supabase environment variables. Using fallback values for development.');
-  console.warn('SUPABASE_URL:', SUPABASE_URL ? 'Set' : 'Missing');
-  console.warn('SUPABASE_PUBLISHABLE_KEY:', SUPABASE_PUBLISHABLE_KEY ? 'Set' : 'Missing');
-}
-
-export const supabase = createClient<Database>(
-  SUPABASE_URL || fallbackUrl, 
-  SUPABASE_PUBLISHABLE_KEY || fallbackKey, 
-  {
-    auth: {
-      storage: localStorage,
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      storageKey: 'in33-auth-token',
-    }
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    storage: localStorage,
+    persistSession: true,
+    autoRefreshToken: true,
   }
-);
+});
