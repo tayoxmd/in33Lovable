@@ -1,0 +1,22 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background is transparent -->
+  
+  <!-- Letter T -->
+  <text x="10" y="50" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white">T</text>
+  
+  <!-- Letter A -->
+  <text x="50" y="50" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white">A</text>
+  
+  <!-- Letter X - Stylized with chevrons -->
+  <!-- Left part - Light blue chevron pointing right -->
+  <path d="M 90 20 L 100 40 L 90 60 L 95 40 Z" fill="#00D4FF" stroke="none"/>
+  <path d="M 95 25 L 105 40 L 95 55 L 100 40 Z" fill="#00D4FF" stroke="none"/>
+  
+  <!-- Right part - Hot pink chevron pointing left -->
+  <path d="M 110 20 L 100 40 L 110 60 L 105 40 Z" fill="#FF00FF" stroke="none"/>
+  <path d="M 105 25 L 95 40 L 105 55 L 100 40 Z" fill="#FF00FF" stroke="none"/>
+  
+  <!-- Letter I -->
+  <text x="130" y="50" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="white">I</text>
+</svg>
+

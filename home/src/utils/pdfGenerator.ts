@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import { format } from 'date-fns';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/taxi-logo.svg';
 
 // Cache for loaded font
 let arabicFontLoaded = false;
@@ -164,9 +164,15 @@ export async function generateBookingPDF(data: PDFBookingData): Promise<jsPDF> {
     
     // Add logo on the left side
     try {
-      doc.addImage(logo, 'PNG', marginLeft, 5, 20, 20);
+      // Try SVG first, fallback to PNG if needed
+      doc.addImage(logo, 'SVG', marginLeft, 5, 20, 20);
     } catch (error) {
-      console.error('Error adding logo to PDF:', error);
+      // If SVG fails, try as PNG
+      try {
+        doc.addImage(logo, 'PNG', marginLeft, 5, 20, 20);
+      } catch (pngError) {
+        console.error('Error adding logo to PDF:', pngError);
+      }
     }
     
     // Booking number in top right
