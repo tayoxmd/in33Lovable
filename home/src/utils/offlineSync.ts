@@ -171,15 +171,15 @@ if (typeof window !== 'undefined') {
     console.log('انقطع الاتصال بالإنترنت - الوضع غير المتصل نشط');
   });
 
-  // مزامنة دورية كل 5 دقائق
+  // مزامنة دورية كل 15 دقيقة (تم تقليل التكرار لتحسين الأداء)
   setInterval(() => {
     if (navigator.onLine) {
       offlineSync.syncPendingOperations().catch(console.error);
     }
-  }, 5 * 60 * 1000);
+  }, 15 * 60 * 1000);
 
-  // مسح البيانات القديمة كل ساعة
+  // مسح البيانات القديمة كل 3 ساعات (تم تقليل التكرار لتحسين الأداء)
   setInterval(() => {
     offlineSync.clearOldCache();
-  }, 60 * 60 * 1000);
+  }, 3 * 60 * 60 * 1000);
 }

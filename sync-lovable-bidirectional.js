@@ -13,7 +13,7 @@ const LOVABLE_BACKUP_DIR = path.join(PROJECT_DIR, 'backup', 'backup-lovable');
 
 // إعدادات المزامنة
 const SYNC_CONFIG = {
-  watchInterval: 5000, // 5 ثواني
+  watchInterval: 30000, // 30 ثانية (تم تقليل التكرار لتحسين الأداء)
   autoCommit: true,
   autoPush: true,
   excludePatterns: [
@@ -23,7 +23,14 @@ const SYNC_CONFIG = {
     'backup',
     '.env',
     'sync-log.json',
-    '*.log'
+    '*.log',
+    '**/node_modules/**',
+    '**/.git/**',
+    '**/dist/**',
+    '**/build/**',
+    '**/*.log',
+    '**/.DS_Store',
+    '**/Thumbs.db'
   ]
 };
 

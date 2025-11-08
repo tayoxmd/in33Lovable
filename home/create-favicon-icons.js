@@ -77,3 +77,4 @@ writeFileSync(icon512Path, icon512Svg, 'utf-8');
 console.log('✅ تم إنشاء favicon.svg و icon-192.svg و icon-512.svg بنجاح!');
 console.log('✅ Created favicon.svg, icon-192.svg, and icon-512.svg successfully!');
 
+

@@ -108,3 +108,4 @@ INSERT INTO cities (name_ar, name_en, active) VALUES
 2. جدول `cities` يحتوي على أعمدة: `id`, `name_ar`, `name_en`, `active`
 3. على الأقل مدينة واحدة لديها `active = true`
 
+
