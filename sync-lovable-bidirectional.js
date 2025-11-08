@@ -177,7 +177,10 @@ async function pushToGitHub() {
     // رفع التحديثات
     execSync('git push origin main', { cwd: PROJECT_DIR, stdio: 'inherit' });
     
-    logSync('PUSH', 'Pushed updates to GitHub');
+    // إنشاء نسخة احتياطية بعد الرفع بنجاح
+    await createCpanelBackup();
+    
+    logSync('PUSH', 'Pushed updates to GitHub and created backup');
     return true;
   } catch (error) {
     console.error('خطأ في رفع التحديثات:', error.message);
