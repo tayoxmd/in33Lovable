@@ -1,6 +1,4 @@
-import { Database } from '@/integrations/supabase/types';
-
-// Local types for Kanban system until Supabase types update
+// Local types for Kanban system
 export interface Task {
   id: string;
   title: string;
