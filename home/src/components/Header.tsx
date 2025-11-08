@@ -8,7 +8,7 @@ import { NotificationBell } from "./NotificationBell";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { ThemeSelector } from "@/components/ThemeSelector";
 import { useIsMobile } from "@/hooks/use-mobile";
-import logo from "@/assets/logo-original.png";
+import logo from "@/assets/logo-transparent.png";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -85,7 +85,6 @@ export function Header() {
                   src={logo} 
                   alt="IN33 Logo" 
                   className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16 sm:w-20 sm:h-20'} object-contain`}
-                  style={{ mixBlendMode: 'multiply' }}
                 />
               </Link>
               {/* عنوان الصفحة للجوال والتابلت */}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo-original.png";
+import logo from "@/assets/logo-transparent.png";
 
 const Navbar = () => {
   return (
@@ -12,7 +12,6 @@ const Navbar = () => {
               src={logo} 
               alt="IN33 Logo" 
               className="h-14 object-contain"
-              style={{ mixBlendMode: 'multiply' }}
             />
           </Link>
           

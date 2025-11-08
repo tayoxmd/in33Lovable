@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { countries } from "@/data/countries";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { WhatsAppAuth } from "@/components/WhatsAppAuth";
-import logo from "@/assets/logo-original.png";
+import logo from "@/assets/logo-transparent.png";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -167,7 +167,6 @@ export default function Auth() {
               alt="IN33" 
               className="relative w-full h-full object-contain"
               style={{
-                mixBlendMode: 'multiply',
                 animation: "logoFloat 6s ease-in-out infinite"
               }}
             />
