@@ -26,16 +26,16 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
   const [currentTheme, setCurrentTheme] = useState('design1');
   const [themeMode, setThemeMode] = useState<'light' | 'dark' | 'neutral' | 'comfort'>('light');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadCurrentTheme();
+  }, [isAdmin]);
   
   // إظهار زر التصميم فقط للادمن (مدير)
   const isManager = userRole === 'admin' || userRole === 'manager';
   if (!isManager) {
     return null;
   }
-
-  useEffect(() => {
-    loadCurrentTheme();
-  }, [isAdmin]);
 
   const loadCurrentTheme = async () => {
     const { data } = await supabase
