@@ -69,9 +69,10 @@ const Index = () => {
       <Header />
       <LiveChatButton />
 
-      {/* Hero Section (fallback background) */}
+      {/* Hero Section */}
       <section className="relative min-h-[500px] md:min-h-[650px] flex items-center justify-center pt-16 md:pt-20 overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-primary/70 via-primary/60 to-black/70" aria-hidden="true" />
+        {/* Hero Slideshow with 3D Logo */}
+        <HeroSlideshow />
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 py-20">
