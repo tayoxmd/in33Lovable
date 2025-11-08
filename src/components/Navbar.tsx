@@ -11,7 +11,7 @@ const Navbar = () => {
             <img 
               src={logo} 
               alt="IN33 Logo" 
-              className="h-14 object-contain"
+              className="h-14 object-contain bg-transparent border-0"
             />
           </Link>
           

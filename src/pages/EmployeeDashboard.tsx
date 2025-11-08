@@ -187,7 +187,7 @@ export default function EmployeeDashboard() {
         <aside className="hidden lg:flex flex-col w-64 bg-card border-l border-border shadow-xl">
           <div className="p-6 border-b border-border">
             <div className="flex items-center gap-3">
-              <img src={logo} alt="IN33 Logo" className="w-10 h-10 object-contain" />
+              <img src={logo} alt="IN33 Logo" className="w-10 h-10 object-contain bg-transparent border-0" />
               <div>
                 <h2 className="font-bold text-lg">{t({ ar: "IN33", en: "IN33" })}</h2>
                 <p className="text-xs text-muted-foreground">{t({ ar: "لوحة الموظف", en: "Employee Panel" })}</p>

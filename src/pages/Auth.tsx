@@ -165,7 +165,7 @@ export default function Auth() {
             <img 
               src={logo} 
               alt="IN33" 
-              className="relative w-full h-full object-contain"
+              className="relative w-full h-full object-contain bg-transparent border-0"
               style={{
                 animation: "logoFloat 6s ease-in-out infinite"
               }}

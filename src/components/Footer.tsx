@@ -45,7 +45,7 @@ export function Footer() {
             <img 
               src={logo} 
               alt="IN33 Logo" 
-              className="w-24 h-24 object-contain"
+              className="w-24 h-24 object-contain bg-transparent border-0"
             />
             <div className="flex flex-col">
               <span className="text-2xl font-bold">

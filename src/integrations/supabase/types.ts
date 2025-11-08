@@ -738,6 +738,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_hotels: {
+        Args: { p_active_only?: boolean; p_city_id?: string }
+        Returns: {
+          address: string | null
+          amenities: string[] | null
+          city: string | null
+          country: string | null
+          created_at: string
+          description: string | null
+          id: string
+          images: string[] | null
+          name: string
+          name_ar: string | null
+          name_en: string | null
+          rating: number | null
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "hotels"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_public_site_settings: {
         Args: never
         Returns: {

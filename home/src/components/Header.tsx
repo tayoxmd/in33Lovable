@@ -84,7 +84,7 @@ export function Header() {
                 <img 
                   src={logo} 
                   alt="IN33 Logo" 
-                  className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16 sm:w-20 sm:h-20'} object-contain`}
+                  className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16 sm:w-20 sm:h-20'} object-contain bg-transparent border-0`}
                 />
               </Link>
               {/* عنوان الصفحة للجوال والتابلت */}
