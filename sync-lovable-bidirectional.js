@@ -135,6 +135,26 @@ async function pullFromGitHub() {
 /**
  * رفع التحديثات إلى GitHub
  */
+/**
+ * إنشاء نسخة احتياطية جاهزة لـ cPanel
+ */
+async function createCpanelBackup() {
+  try {
+    console.log('📦 جاري إنشاء نسخة احتياطية لـ cPanel...');
+    execSync('node create-cpanel-backup.js', { 
+      cwd: PROJECT_DIR, 
+      stdio: 'inherit' 
+    });
+    console.log('✅ تم إنشاء النسخة الاحتياطية بنجاح');
+    logSync('CPANEL_BACKUP', 'Created cPanel backup');
+    return true;
+  } catch (error) {
+    console.warn('⚠️  فشل إنشاء النسخة الاحتياطية:', error.message);
+    logSync('CPANEL_BACKUP_ERROR', error.message);
+    return false;
+  }
+}
+
 async function pushToGitHub() {
   try {
     ensureGitRepo();
