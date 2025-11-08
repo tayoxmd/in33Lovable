@@ -427,10 +427,11 @@ export default function ManageEmployees() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="customer">{t({ ar: "عميل", en: "Customer" })}</SelectItem>
-                        <SelectItem value="company">{t({ ar: "شركات", en: "Company" })}</SelectItem>
-                        <SelectItem value="employee">{t({ ar: "موظف", en: "Employee" })}</SelectItem>
+                        <SelectItem value="admin">{t({ ar: "مدير النظام", en: "Admin" })}</SelectItem>
                         <SelectItem value="manager">{t({ ar: "مدير", en: "Manager" })}</SelectItem>
+                        <SelectItem value="employee">{t({ ar: "موظف", en: "Employee" })}</SelectItem>
+                        <SelectItem value="company">{t({ ar: "شركات", en: "Company" })}</SelectItem>
+                        <SelectItem value="customer">{t({ ar: "عميل", en: "Customer" })}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -522,10 +523,11 @@ export default function ManageEmployees() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="customer">{t({ ar: "عميل", en: "Customer" })}</SelectItem>
+                    <SelectItem value="admin">{t({ ar: "مدير النظام", en: "Admin" })}</SelectItem>
+                    <SelectItem value="manager">{t({ ar: "مدير", en: "Manager" })}</SelectItem>
                     <SelectItem value="employee">{t({ ar: "موظف", en: "Employee" })}</SelectItem>
-                    <SelectItem value="admin">{t({ ar: "مدير", en: "Admin" })}</SelectItem>
                     <SelectItem value="company">{t({ ar: "شركات", en: "Company" })}</SelectItem>
+                    <SelectItem value="customer">{t({ ar: "عميل", en: "Customer" })}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
