@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/taxi-logo.svg";
+import logo from "@/assets/logo-original.png";
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -44,8 +44,9 @@ export function Footer() {
           <div className="flex items-center gap-3 mb-4">
             <img 
               src={logo} 
-              alt="TAXI Logo" 
-              className="w-16 h-16 object-contain logo-3d-rotate"
+              alt="IN33 Logo" 
+              className="w-24 h-24 object-contain"
+              style={{ mixBlendMode: 'multiply' }}
             />
             <div className="flex flex-col">
               <span className="text-2xl font-bold text-white">

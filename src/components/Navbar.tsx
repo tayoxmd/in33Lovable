@@ -1,15 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Truck } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "@/assets/logo-original.png";
 
 const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary">
-            <Truck className="w-7 h-7" />
-            <span>in33.in</span>
+          <Link to="/" className="flex items-center gap-2">
+            <img 
+              src={logo} 
+              alt="IN33 Logo" 
+              className="h-14 object-contain"
+              style={{ mixBlendMode: 'multiply' }}
+            />
           </Link>
           
           <div className="hidden md:flex items-center gap-6">

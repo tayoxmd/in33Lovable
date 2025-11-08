@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { countries } from "@/data/countries";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { WhatsAppAuth } from "@/components/WhatsAppAuth";
-import logo from "@/assets/taxi-logo.svg";
+import logo from "@/assets/logo-original.png";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -161,14 +161,13 @@ export default function Auth() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary via-primary-glow to-primary">
       <Card className="w-full max-w-md bg-card shadow-luxury border-0 rounded-2xl">
         <CardHeader className="text-center">
-          <div className="relative w-24 h-24 mx-auto mb-4">
-            <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-amber-100/30 via-amber-50/40 to-amber-100/30 animate-pulse" />
+          <div className="relative w-32 h-32 mx-auto mb-4">
             <img 
               src={logo} 
-              alt="TAXI" 
-              className="relative w-full h-full object-contain drop-shadow-2xl"
+              alt="IN33" 
+              className="relative w-full h-full object-contain"
               style={{
-                filter: "drop-shadow(0 0 25px rgba(245, 222, 179, 0.6)) drop-shadow(0 0 12px rgba(222, 184, 135, 0.4))",
+                mixBlendMode: 'multiply',
                 animation: "logoFloat 6s ease-in-out infinite"
               }}
             />
