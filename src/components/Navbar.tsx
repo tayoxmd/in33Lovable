@@ -29,7 +29,7 @@ const Navbar = () => {
               <Button variant="outline">تسجيل الدخول</Button>
             </Link>
             <Link to="/auth">
-              <Button variant="hero">ابدأ الآن</Button>
+              <Button>ابدأ الآن</Button>
             </Link>
           </div>
         </div>
