@@ -29,13 +29,6 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
   
   // إظهار زر التصميم فقط للادمن (مدير)
   const isManager = userRole === 'admin' || userRole === 'manager';
-  if (!isManager) {
-    return null;
-  }
-
-  useEffect(() => {
-    loadCurrentTheme();
-  }, [isAdmin]);
 
   const loadCurrentTheme = async () => {
     const { data } = await supabase
@@ -65,6 +58,13 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
       }
     }
   };
+
+  useEffect(() => {
+    if (isManager) {
+      loadCurrentTheme();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin, isManager]);
 
   const applyTheme = async (theme: string, mode: 'light' | 'dark' | 'neutral' | 'comfort') => {
     setLoading(true);
@@ -132,6 +132,11 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
         { id: 'design4', name: t({ ar: 'تصميم 4', en: 'Design 4' }) },
         { id: 'design5', name: t({ ar: 'تصميم 5', en: 'Design 5' }) },
       ];
+
+  // إظهار زر التصميم فقط للادمن (مدير)
+  if (!isManager) {
+    return null;
+  }
 
   return (
     <DropdownMenu>
