@@ -71,11 +71,38 @@ function ensureGitRepo() {
 }
 
 /**
+ * إنشاء نسخة احتياطية من Lovable قبل جلب التحديثات
+ */
+async function createLovableBackupBeforePull() {
+  try {
+    // استيراد دالة النسخ الاحتياطي
+    const { execSync } = await import('child_process');
+    
+    console.log('📦 جاري إنشاء نسخة احتياطية من Lovable...');
+    
+    // تشغيل سكريبت النسخ الاحتياطي
+    execSync('node backup-lovable.js', { 
+      cwd: PROJECT_DIR, 
+      stdio: 'pipe' 
+    });
+    
+    logSync('LOVABLE_BACKUP', 'Created backup before pull');
+    return true;
+  } catch (error) {
+    console.warn('⚠️  لم يتم إنشاء النسخة الاحتياطية:', error.message);
+    return false;
+  }
+}
+
+/**
  * جلب التحديثات من GitHub
  */
 async function pullFromGitHub() {
   try {
     ensureGitRepo();
+    
+    // إنشاء نسخة احتياطية من Lovable قبل جلب التحديثات
+    await createLovableBackupBeforePull();
     
     console.log('جاري جلب التحديثات من GitHub...');
     
