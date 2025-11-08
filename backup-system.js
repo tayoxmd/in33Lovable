@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 // الإعدادات
 const CONFIG = {
   HOME_DIR: path.join(__dirname, 'home'),
-  BACKUP_DIR: path.join(__dirname, 'backup'),
+  BACKUP_DIR: path.join(__dirname, 'backup', 'backup-cursor'), // نسخ احتياطي من Cursor
   CHECK_INTERVAL: 20 * 60 * 1000, // 20 دقيقة
   EXCLUDE_PATTERNS: [
     'node_modules/**',

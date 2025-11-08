@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const CONFIG = {
   HOME_DIR: path.join(__dirname, 'home'),
-  BACKUP_DIR: path.join(__dirname, 'backup'),
+  BACKUP_DIR: path.join(__dirname, 'backup', 'backup-cursor'), // نسخ احتياطي من Cursor
   EXCLUDE_PATTERNS: [
     'node_modules/**',
     '.git/**',

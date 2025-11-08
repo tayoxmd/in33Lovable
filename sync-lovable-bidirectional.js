@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 const PROJECT_DIR = __dirname;
 const GIT_REMOTE = 'https://github.com/tayoxmd/in33Lovable.git';
 const SYNC_LOG_FILE = path.join(PROJECT_DIR, 'sync-log.json');
+const LOVABLE_BACKUP_DIR = path.join(PROJECT_DIR, 'backup', 'backup-lovable');
 
 // إعدادات المزامنة
 const SYNC_CONFIG = {
