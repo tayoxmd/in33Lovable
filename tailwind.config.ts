@@ -22,19 +22,11 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-<<<<<<< HEAD
-=======
-          light: "hsl(var(--primary-light))",
->>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
           glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
-<<<<<<< HEAD
-=======
-          light: "hsl(var(--secondary-light))",
->>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -57,21 +49,13 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         sidebar: {
-<<<<<<< HEAD
           DEFAULT: "hsl(var(--sidebar))",
           foreground: "hsl(var(--sidebar-foreground))",
-=======
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
->>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
           accent: "hsl(var(--sidebar-accent))",
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-<<<<<<< HEAD
         status: {
           new: "hsl(var(--status-new))",
           pending: "hsl(var(--status-pending))",
@@ -88,8 +72,6 @@ export default {
         'luxury': 'var(--shadow-luxury)',
         'card': 'var(--shadow-card)',
         'elegant': 'var(--shadow-elegant)',
-=======
->>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -98,7 +80,6 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-<<<<<<< HEAD
           from: { height: "0", opacity: "0" },
           to: { height: "var(--radix-accordion-content-height)", opacity: "1" },
         },
@@ -145,27 +126,6 @@ export default {
         "float": "float 3s ease-in-out infinite",
         "rotate-slow": "rotate-360 8s linear infinite",
         "rotate-3d-slow": "rotate-3d 8s linear infinite",
-=======
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
-        },
-        "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
->>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
       },
     },
   },
