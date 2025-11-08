@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 home/node_modules/
@@ -17,10 +18,15 @@ build/
 home/build/
 
 # Logs
+=======
+# Logs
+logs
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 
 # IDE
 .vscode/
@@ -42,3 +48,23 @@ backup/
 *.tmp
 *.temp
 
+=======
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366

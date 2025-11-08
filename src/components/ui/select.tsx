@@ -94,6 +94,7 @@ const SelectLabel = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
 >(({ className, ...props }, ref) => (
+<<<<<<< HEAD
   <SelectPrimitive.Label 
     ref={ref} 
     className={cn(
@@ -103,6 +104,9 @@ const SelectLabel = React.forwardRef<
     )} 
     {...props} 
   />
+=======
+  <SelectPrimitive.Label ref={ref} className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)} {...props} />
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
 ));
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
@@ -113,13 +117,21 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
+<<<<<<< HEAD
       "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-accent focus:text-accent-foreground",
       "ltr:pl-8 ltr:pr-2 rtl:pr-8 rtl:pl-2",
+=======
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-accent focus:text-accent-foreground",
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
       className,
     )}
     {...props}
   >
+<<<<<<< HEAD
     <span className="absolute flex h-3.5 w-3.5 items-center justify-center ltr:left-2 rtl:right-2">
+=======
+    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
       <SelectPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>

@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
+<<<<<<< HEAD
 // Register service worker with error handling
 try {
   import("./registerSW").catch((err) => {
@@ -29,3 +30,6 @@ try {
     </div>
   `;
 }
+=======
+createRoot(document.getElementById("root")!).render(<App />);
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366

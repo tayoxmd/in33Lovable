@@ -8,6 +8,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
+<<<<<<< HEAD
     "preview": "vite preview",
     "setup-db": "node setup-database-direct.js",
     "sync:lovable": "node sync-lovable-bidirectional.js watch",
@@ -20,6 +21,11 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+=======
+    "preview": "vite preview"
+  },
+  "dependencies": {
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -48,14 +54,19 @@
     "@radix-ui/react-toggle": "^1.1.9",
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
+<<<<<<< HEAD
     "@supabase/supabase-js": "^2.80.0",
     "@tanstack/react-query": "^5.83.0",
     "@types/dompurify": "^3.2.0",
     "basic-ftp": "^5.0.5",
+=======
+    "@tanstack/react-query": "^5.83.0",
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
+<<<<<<< HEAD
     "dompurify": "^3.3.0",
     "embla-carousel-react": "^8.6.0",
     "html2canvas": "^1.4.1",
@@ -66,6 +77,13 @@
     "pg": "^8.16.3",
     "react": "^18.3.1",
     "react-colorful": "^5.6.1",
+=======
+    "embla-carousel-react": "^8.6.0",
+    "input-otp": "^1.4.2",
+    "lucide-react": "^0.462.0",
+    "next-themes": "^0.3.0",
+    "react": "^18.3.1",
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.61.1",
@@ -76,8 +94,11 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.9",
+<<<<<<< HEAD
     "vite-plugin-pwa": "^1.1.0",
     "workbox-window": "^7.3.0",
+=======
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
     "zod": "^3.25.76"
   },
   "devDependencies": {
@@ -92,7 +113,11 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
+<<<<<<< HEAD
     "lovable-tagger": "^1.1.10",
+=======
+    "lovable-tagger": "^1.1.11",
+>>>>>>> a6ad102384374fc3696efdda3640e9866dbbd366
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
