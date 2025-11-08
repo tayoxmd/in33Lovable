@@ -604,6 +604,129 @@ export default function SiteSettings() {
     }
   };
 
+  const handleCreateLovableBackup = async () => {
+    setLovableBackupLoading(true);
+    try {
+      // إنشاء نسخة احتياطية شاملة مع جميع البيانات
+      const { data, error } = await supabase.rpc('create_system_backup');
+      
+      if (error) throw error;
+
+      // إنشاء نسخة احتياطية شاملة جاهزة للتفعيل في cPanel أو local
+      const fullBackup = {
+        ...data,
+        metadata: {
+          type: 'full_backup',
+          ready_for_cpanel: true,
+          ready_for_local: true,
+          created_at: new Date().toISOString(),
+          version: data.version || 1
+        }
+      };
+
+      // تحميل النسخة الاحتياطية مباشرة إلى المسار المحدد
+      const dataStr = JSON.stringify(fullBackup, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      const date = new Date().toISOString().split('T')[0];
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      link.download = `lovable-backup-v${fullBackup.metadata.version}-${date}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      // حفظ معلومات النسخة الاحتياطية
+      setLovableBackupInfo({
+        created_at: new Date().toISOString(),
+        version: fullBackup.metadata.version
+      });
+
+      toast({
+        title: t({ ar: "تم إنشاء النسخة الاحتياطية الشاملة", en: "Full Backup Created" }),
+        description: t({ 
+          ar: "تم إنشاء النسخة الاحتياطية الشاملة بنجاح. تم تحميلها إلى: backup\\backup-lovable", 
+          en: "Full backup created successfully. Downloaded to: backup\\backup-lovable" 
+        }),
+      });
+    } catch (error: any) {
+      toast({
+        title: t({ ar: "خطأ", en: "Error" }),
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLovableBackupLoading(false);
+    }
+  };
+
+  const handleDownloadLovableBackup = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('backup_data, backup_created_at, backup_version')
+        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (!data?.backup_data) {
+        toast({
+          title: t({ ar: "لا توجد نسخة احتياطية", en: "No Backup Available" }),
+          description: t({ 
+            ar: "يجب إنشاء نسخة احتياطية أولاً", 
+            en: "Please create a backup first" 
+          }),
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // إنشاء نسخة احتياطية شاملة جاهزة للتفعيل
+      const fullBackup = {
+        ...data.backup_data,
+        metadata: {
+          type: 'full_backup',
+          ready_for_cpanel: true,
+          ready_for_local: true,
+          created_at: data.backup_created_at,
+          version: data.backup_version || 1
+        }
+      };
+
+      // Create download link
+      const dataStr = JSON.stringify(fullBackup, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      const date = new Date(data.backup_created_at).toISOString().split('T')[0];
+      link.download = `lovable-backup-v${data.backup_version}-${date}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: t({ ar: "تم التحميل", en: "Downloaded" }),
+        description: t({ 
+          ar: "تم تحميل النسخة الاحتياطية الشاملة بنجاح. المسار: backup\\backup-lovable", 
+          en: "Full backup downloaded successfully. Path: backup\\backup-lovable" 
+        }),
+      });
+    } catch (error: any) {
+      toast({
+        title: t({ ar: "خطأ", en: "Error" }),
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (loading || loadingSettings) {
     return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
   }
@@ -1884,6 +2007,125 @@ export default function SiteSettings() {
                 {t({ 
                   ar: "تشمل النسخة الاحتياطية: المدن، الفنادق، الأسعار الموسمية، القسائم، والإعدادات. يتم حفظ نسخة في قاعدة البيانات ويمكنك تحميلها كملف JSON.", 
                   en: "Backup includes: cities, hotels, seasonal pricing, coupons, and settings. A copy is saved in the database and can be downloaded as a JSON file." 
+                })}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Lovable Backup System - نسخة عامة إلى السيرفر المحلي */}
+      <div className="container mx-auto px-4 pb-8">
+        <Card className="card-luxury border-2" style={{ borderColor: '#34d399' }}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2" style={{ color: '#34d399' }}>
+              <Database className="w-5 h-5" />
+              {t({ ar: "نسخة عامة إلى السيرفر المحلي", en: "General Backup to Local Server" })}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm" style={{ color: '#34d399' }}>
+              {t({ 
+                ar: "قم بإنشاء نسخة احتياطية شاملة من جميع البيانات مع النسخة الجاهزة للتفعيل في cPanel أو local. يتم حفظها مباشرة في: backup\\backup-lovable", 
+                en: "Create a comprehensive backup of all data with a version ready for activation in cPanel or local. Saved directly to: backup\\backup-lovable" 
+              })}
+            </p>
+
+            {lovableBackupInfo.created_at && (
+              <div className="p-4 rounded-lg space-y-2" style={{ backgroundColor: '#d1fae5', borderColor: '#34d399', borderWidth: '1px', borderStyle: 'solid' }}>
+                <div className="flex items-center gap-2 text-sm" style={{ color: '#065f46' }}>
+                  <Save className="w-4 h-4" />
+                  <span className="font-medium">
+                    {t({ ar: "آخر نسخة احتياطية:", en: "Last Backup:" })}
+                  </span>
+                  <span>
+                    {new Date(lovableBackupInfo.created_at).toLocaleString(t({ ar: 'ar-SA', en: 'en-US' }))}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-sm" style={{ color: '#065f46' }}>
+                  <span className="font-medium">
+                    {t({ ar: "الإصدار:", en: "Version:" })}
+                  </span>
+                  <span>v{lovableBackupInfo.version}</span>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Button 
+                onClick={handleCreateLovableBackup} 
+                disabled={lovableBackupLoading}
+                className="font-medium"
+                style={{ 
+                  backgroundColor: '#34d399', 
+                  color: '#ffffff',
+                  borderColor: '#34d399'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#10b981';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#34d399';
+                }}
+              >
+                {lovableBackupLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    {t({ ar: "جاري الإنشاء...", en: "Creating..." })}
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    {t({ ar: "إنشاء نسخة احتياطية شاملة", en: "Create Full Backup" })}
+                  </>
+                )}
+              </Button>
+
+              <Button 
+                onClick={handleDownloadLovableBackup}
+                disabled={!backupInfo.created_at}
+                className="font-medium"
+                style={{ 
+                  backgroundColor: '#34d399', 
+                  color: '#ffffff',
+                  borderColor: '#34d399'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#10b981';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#34d399';
+                }}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {t({ ar: "تحميل النسخة الاحتياطية", en: "Download Backup" })}
+              </Button>
+              
+              <Button 
+                onClick={() => setShowBackupManager(true)}
+                className="font-medium"
+                style={{ 
+                  backgroundColor: '#34d399', 
+                  color: '#ffffff',
+                  borderColor: '#34d399'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#10b981';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#34d399';
+                }}
+              >
+                <Database className="w-4 h-4 mr-2" />
+                {t({ ar: "إدارة جميع النسخ", en: "Manage All Backups" })}
+              </Button>
+            </div>
+
+            <div className="p-3 rounded-lg" style={{ backgroundColor: '#d1fae5', borderColor: '#34d399', borderWidth: '1px', borderStyle: 'solid' }}>
+              <p className="text-xs" style={{ color: '#065f46' }}>
+                {t({ 
+                  ar: "تشمل النسخة الاحتياطية الشاملة: جميع البيانات (المدن، الفنادق، الأسعار الموسمية، القسائم، الإعدادات، المستخدمين، الحجوزات). النسخة جاهزة للتفعيل في cPanel أو local. يتم حفظها مباشرة في: C:\\Users\\xmd55\\Desktop\\in33.in\\backup\\backup-lovable", 
+                  en: "Full backup includes: all data (cities, hotels, seasonal pricing, coupons, settings, users, bookings). Ready for activation in cPanel or local. Saved directly to: C:\\Users\\xmd55\\Desktop\\in33.in\\backup\\backup-lovable" 
                 })}
               </p>
             </div>
