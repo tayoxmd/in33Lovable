@@ -58,6 +58,7 @@ import TaskSharingSettings from "./pages/TaskSharingSettings";
 import PermissionsManagement from "./pages/PermissionsManagement";
 import Email from "./pages/Email";
 import EmailSettings from "./pages/EmailSettings";
+import RoleStatistics from "./pages/RoleStatistics";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -126,6 +127,7 @@ const RouterWithTheme = () => {
               <Route path="/audit-logs" element={<ProtectedRoute><AuditLogs /></ProtectedRoute>} />
               <Route path="/email" element={<ProtectedRoute><Email /></ProtectedRoute>} />
               <Route path="/email-settings" element={<ProtectedRoute><EmailSettings /></ProtectedRoute>} />
+              <Route path="/role-statistics" element={<ProtectedRoute><RoleStatistics /></ProtectedRoute>} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
