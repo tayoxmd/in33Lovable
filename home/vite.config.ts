@@ -30,9 +30,9 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.png', 'icon-192.png', 'icon-512.png'],
       manifest: {
-        name: 'جوار الحرم - إثراء',
-        short_name: 'جوار الحرم',
-        description: 'احجز أفضل الفنادق والشقق الفندقية بأسعار تنافسية',
+        name: 'IN33 - إدارة النقل',
+        short_name: 'IN33',
+        description: 'نظام إدارة النقل - إدارة شاملة لعمليات النقل',
         theme_color: '#007dff',
         background_color: '#ffffff',
         display: 'standalone',
