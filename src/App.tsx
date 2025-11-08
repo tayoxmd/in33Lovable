@@ -48,6 +48,7 @@ import TaskSettings from "./pages/TaskSettings";
 import TaskAccessControl from './pages/TaskAccessControl';
 import TaskArchive from "./pages/TaskArchive";
 import PrivateAccounting from "./pages/PrivateAccounting";
+import NextJsComparison from "./pages/NextJsComparison";
 import PrivateAccountingSettings from "./pages/PrivateAccountingSettings";
 import PrivateCustomers from "./pages/PrivateCustomers";
 import PrivateBookings from "./pages/PrivateBookings";
@@ -128,6 +129,7 @@ const RouterWithTheme = () => {
               <Route path="/email" element={<ProtectedRoute><Email /></ProtectedRoute>} />
               <Route path="/email-settings" element={<ProtectedRoute><EmailSettings /></ProtectedRoute>} />
               <Route path="/role-statistics" element={<ProtectedRoute><RoleStatistics /></ProtectedRoute>} />
+              <Route path="/nextjs-comparison" element={<NextJsComparison />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
