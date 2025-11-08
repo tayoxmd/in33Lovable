@@ -513,9 +513,66 @@ export default function SiteSettings() {
   const handleCreateBackup = async () => {
     setBackupLoading(true);
     try {
-      const { data, error } = await supabase.rpc('create_system_backup');
-      
-      if (error) throw error;
+      // إنشاء نسخة احتياطية بدون استخدام RPC function
+      const backupData: any = {};
+
+      // جمع البيانات من جميع الجداول
+      const [cities, hotels, hotelSeasonalPricing, coupons, couponHotels, siteSettings, whatsappSettings, pdfSettings] = await Promise.all([
+        supabase.from('cities').select('*'),
+        supabase.from('hotels').select('*'),
+        supabase.from('hotel_seasonal_pricing').select('*'),
+        supabase.from('coupons').select('*'),
+        supabase.from('coupon_hotels').select('*'),
+        supabase.from('site_settings').select('*').order('created_at', { ascending: false }).limit(1).maybeSingle(),
+        supabase.from('whatsapp_settings').select('*').maybeSingle(),
+        supabase.from('pdf_settings').select('*').maybeSingle(),
+      ]);
+
+      backupData.cities = cities.data || [];
+      backupData.hotels = hotels.data || [];
+      backupData.hotel_seasonal_pricing = hotelSeasonalPricing.data || [];
+      backupData.coupons = coupons.data || [];
+      backupData.coupon_hotels = couponHotels.data || [];
+      backupData.site_settings = siteSettings.data || null;
+      backupData.whatsapp_settings = whatsappSettings.data || null;
+      backupData.pdf_settings = pdfSettings.data || null;
+      backupData.version = 1;
+      backupData.created_at = new Date().toISOString();
+
+      // الحصول على الإعدادات الموجودة
+      const { data: existingSettings } = await supabase
+        .from('site_settings')
+        .select('id, backup_version')
+        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const newVersion = (existingSettings?.backup_version || 0) + 1;
+
+      // حفظ النسخة الاحتياطية
+      if (existingSettings) {
+        const { error: updateError } = await supabase
+          .from('site_settings')
+          .update({
+            backup_data: backupData,
+            backup_created_at: new Date().toISOString(),
+            backup_version: newVersion
+          })
+          .eq('id', existingSettings.id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from('site_settings')
+          .insert({
+            backup_data: backupData,
+            backup_created_at: new Date().toISOString(),
+            backup_version: newVersion
+          });
+
+        if (insertError) throw insertError;
+      }
 
       // Fetch updated backup info
       const { data: settingsData } = await supabase
@@ -607,10 +664,96 @@ export default function SiteSettings() {
   const handleCreateLovableBackup = async () => {
     setLovableBackupLoading(true);
     try {
-      // إنشاء نسخة احتياطية شاملة مع جميع البيانات
-      const { data, error } = await supabase.rpc('create_system_backup');
-      
-      if (error) throw error;
+      // إنشاء نسخة احتياطية شاملة مع جميع البيانات بدون استخدام RPC function
+      const backupData: any = {};
+
+      // جمع البيانات من جميع الجداول
+      const [
+        cities, hotels, hotelOwners, hotelResponsiblePersons, hotelSeasonalPricing,
+        profiles, userRoles, userGuests,
+        bookings, bookingActionsLog, roomAvailability,
+        reviews, complaints,
+        coupons, couponHotels,
+        apiSettings, apiRequests,
+        whatsappSettings, pdfSettings, siteSettings
+      ] = await Promise.all([
+        supabase.from('cities').select('*'),
+        supabase.from('hotels').select('*'),
+        supabase.from('hotel_owners').select('*').catch(() => ({ data: [] })),
+        supabase.from('hotel_responsible_persons').select('*').catch(() => ({ data: [] })),
+        supabase.from('hotel_seasonal_pricing').select('*'),
+        supabase.from('profiles').select('*').catch(() => ({ data: [] })),
+        supabase.from('user_roles').select('*').catch(() => ({ data: [] })),
+        supabase.from('user_guests').select('*').catch(() => ({ data: [] })),
+        supabase.from('bookings').select('*').catch(() => ({ data: [] })),
+        supabase.from('booking_actions_log').select('*').catch(() => ({ data: [] })),
+        supabase.from('room_availability').select('*').catch(() => ({ data: [] })),
+        supabase.from('reviews').select('*').catch(() => ({ data: [] })),
+        supabase.from('complaints').select('*').catch(() => ({ data: [] })),
+        supabase.from('coupons').select('*').catch(() => ({ data: [] })),
+        supabase.from('coupon_hotels').select('*').catch(() => ({ data: [] })),
+        supabase.from('api_settings').select('*').catch(() => ({ data: [] })),
+        supabase.from('api_requests').select('*').catch(() => ({ data: [] })),
+        supabase.from('whatsapp_settings').select('*').maybeSingle().catch(() => ({ data: null })),
+        supabase.from('pdf_settings').select('*').maybeSingle().catch(() => ({ data: null })),
+        supabase.from('site_settings').select('*').order('created_at', { ascending: false }).limit(1).maybeSingle(),
+      ]);
+
+      backupData.cities = cities.data || [];
+      backupData.hotels = hotels.data || [];
+      backupData.hotel_owners = hotelOwners.data || [];
+      backupData.hotel_responsible_persons = hotelResponsiblePersons.data || [];
+      backupData.hotel_seasonal_pricing = hotelSeasonalPricing.data || [];
+      backupData.profiles = profiles.data || [];
+      backupData.user_roles = userRoles.data || [];
+      backupData.user_guests = userGuests.data || [];
+      backupData.bookings = bookings.data || [];
+      backupData.booking_actions_log = bookingActionsLog.data || [];
+      backupData.room_availability = roomAvailability.data || [];
+      backupData.reviews = reviews.data || [];
+      backupData.complaints = complaints.data || [];
+      backupData.coupons = coupons.data || [];
+      backupData.coupon_hotels = couponHotels.data || [];
+      backupData.api_settings = apiSettings.data || [];
+      backupData.api_requests = apiRequests.data || [];
+      backupData.whatsapp_settings = whatsappSettings.data || null;
+      backupData.pdf_settings = pdfSettings.data || null;
+      backupData.site_settings = siteSettings.data || null;
+
+      // الحصول على الإعدادات الموجودة
+      const { data: existingSettings } = await supabase
+        .from('site_settings')
+        .select('id, backup_version')
+        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const newVersion = (existingSettings?.backup_version || 0) + 1;
+
+      // حفظ النسخة الاحتياطية
+      if (existingSettings) {
+        const { error: updateError } = await supabase
+          .from('site_settings')
+          .update({
+            backup_data: backupData,
+            backup_created_at: new Date().toISOString(),
+            backup_version: newVersion
+          })
+          .eq('id', existingSettings.id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from('site_settings')
+          .insert({
+            backup_data: backupData,
+            backup_created_at: new Date().toISOString(),
+            backup_version: newVersion
+          });
+
+        if (insertError) throw insertError;
+      }
 
       // الحصول على معلومات النسخة الاحتياطية
       const { data: settingsData } = await supabase
@@ -623,13 +766,13 @@ export default function SiteSettings() {
 
       // إنشاء نسخة احتياطية شاملة جاهزة للتفعيل في cPanel أو local
       const fullBackup = {
-        ...data,
+        ...backupData,
         metadata: {
           type: 'full_backup',
           ready_for_cpanel: true,
           ready_for_local: true,
           created_at: settingsData?.backup_created_at || new Date().toISOString(),
-          version: settingsData?.backup_version || 1
+          version: settingsData?.backup_version || newVersion
         }
       };
 
