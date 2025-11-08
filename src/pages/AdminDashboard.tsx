@@ -50,6 +50,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import logo from "@/assets/logo-transparent.png";
 
 export default function AdminDashboard() {
   const { userRole, loading, user } = useAuth();
@@ -273,9 +274,7 @@ export default function AdminDashboard() {
       <SidebarContent>
         <div className="p-6 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
-              <LayoutDashboard className="w-5 h-5 text-white" />
-            </div>
+            <img src={logo} alt="IN33 Logo" className="w-10 h-10 object-contain" />
             <div>
               <h2 className="font-bold text-lg">{t({ ar: "IN33", en: "IN33" })}</h2>
               <p className="text-xs text-muted-foreground">{t({ ar: "لوحة التحكم", en: "Dashboard" })}</p>
