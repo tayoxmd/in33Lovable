@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard, Home, ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -35,34 +35,69 @@ export function Header() {
     return '/dashboard';
   };
 
+  const isHomePage = location.pathname === '/';
+  const isMobile = useIsMobile();
+  const isTablet = typeof window !== 'undefined' && window.innerWidth <= 1024 && window.innerWidth > 640;
+
+  // الحصول على عنوان الصفحة الحالية
+  const getPageTitle = () => {
+    const path = location.pathname;
+    if (path === '/admin') return t({ ar: 'لوحة تحكم المدير', en: 'Admin Dashboard' });
+    if (path === '/employee') return t({ ar: 'لوحة تحكم الموظف', en: 'Employee Dashboard' });
+    if (path.startsWith('/admin/')) return t({ ar: 'الإدارة', en: 'Management' });
+    if (path.startsWith('/employee/')) return t({ ar: 'الموظف', en: 'Employee' });
+    return '';
+  };
+
+  const pageTitle = getPageTitle();
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-card/40 backdrop-blur-lg border-b border-border/30 shadow-elegant">
+      <header className={`fixed top-0 left-0 right-0 z-50 bg-card/40 backdrop-blur-lg border-b border-border/30 shadow-elegant ${isMobile ? 'h-14' : 'h-20'}`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 sm:gap-3">
-              <img 
-                src={logo} 
-                alt="IN33 Logo" 
-                className="w-10 h-10 sm:w-12 sm:h-12 object-contain logo-3d-rotate"
-              />
-            </Link>
+          {/* أيقونات الرجوع والرئيسية للجوال - فوق المنيو */}
+          {isMobile && !isHomePage && (
+            <div className="flex items-center justify-between py-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 px-2"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft className="w-3 h-3" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 px-2"
+                onClick={() => navigate('/')}
+              >
+                <Home className="w-3 h-3" />
+              </Button>
+            </div>
+          )}
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
-              <Link to="/" className="text-foreground hover:text-primary transition-colors font-medium">
-                {t('الرئيسية', 'Home')}
+          <div className={`flex items-center justify-between ${isMobile ? 'h-10' : 'h-20'}`}>
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <Link to="/" className="flex items-center gap-2 sm:gap-3">
+                <img 
+                  src={logo} 
+                  alt="IN33 Logo" 
+                  className={`${isMobile ? 'w-8 h-8' : 'w-10 h-10 sm:w-12 sm:h-12'} object-contain logo-3d-rotate`}
+                />
               </Link>
-              <a href="/#hotels" className="text-foreground hover:text-primary transition-colors font-medium">
-                {t('الفنادق', 'Hotels')}
-              </a>
-              <a href="/#offers" className="text-foreground hover:text-primary transition-colors font-medium">
-                {t('العروض', 'Offers')}
-              </a>
-              <a href="/#about" className="text-foreground hover:text-primary transition-colors font-medium">
-                {t('من نحن', 'About')}
-              </a>
+              {/* عنوان الصفحة للجوال والتابلت */}
+              {(isMobile || isTablet) && pageTitle && (
+                <span className="text-xs text-muted-foreground truncate max-w-[120px]">
+                  {pageTitle}
+                </span>
+              )}
+            </div>
+
+            {/* Desktop Navigation - تم إزالة الروابط */}
+            <nav className="hidden md:flex items-center gap-8">
+              {/* تم إزالة الروابط: الرئيسية، الفنادق، العروض، من نحن */}
             </nav>
 
             {/* Actions */}
@@ -79,6 +114,37 @@ export function Header() {
               
               {/* Notification Bell */}
               <NotificationBell />
+
+              {/* أيقونات الرجوع والرئيسية للتابلت وسطح المكتب - داخل المنيو */}
+              {!isMobile && !isHomePage && (
+                <div className="hidden md:flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0"
+                    onClick={() => navigate(-1)}
+                    title={t({ ar: 'الرجوع', en: 'Back' })}
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0"
+                    onClick={() => navigate('/')}
+                    title={t({ ar: 'الرئيسية', en: 'Home' })}
+                  >
+                    <Home className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+
+              {/* عنوان الصفحة لسطح المكتب */}
+              {!isMobile && !isTablet && pageTitle && (
+                <span className="text-sm text-muted-foreground hidden lg:block">
+                  {pageTitle}
+                </span>
+              )}
 
                 {user ? (
                 <>
@@ -182,20 +248,9 @@ export function Header() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="lg:hidden py-4 animate-fade-in">
-              <nav className="flex flex-col gap-4">
-                <Link to="/" className="text-foreground hover:text-primary transition-colors font-medium py-2">
-                  {t('الرئيسية', 'Home')}
-                </Link>
-                <a href="/#hotels" className="text-foreground hover:text-primary transition-colors font-medium py-2">
-                  {t('الفنادق', 'Hotels')}
-                </a>
-                <a href="/#offers" className="text-foreground hover:text-primary transition-colors font-medium py-2">
-                  {t('العروض', 'Offers')}
-                </a>
-                <a href="/#about" className="text-foreground hover:text-primary transition-colors font-medium py-2">
-                  {t('من نحن', 'About')}
-                </a>
+            <div className={`lg:hidden ${isMobile ? 'py-2' : 'py-4'} animate-fade-in`}>
+              <nav className="flex flex-col gap-2">
+                {/* تم إزالة الروابط: الرئيسية، الفنادق، العروض، من نحن */}
                 {user ? (
                   <>
                     {/* Mobile: Tasks and Management in one row */}

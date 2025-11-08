@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { Header } from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookingManagement } from "@/components/BookingManagement";
 import { playNotificationSound } from "@/utils/notificationSound";
@@ -179,6 +180,7 @@ export default function EmployeeDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+      <Header />
       <div className="flex h-screen">
         {/* Sidebar */}
         <aside className="hidden lg:flex flex-col w-64 bg-card border-l border-border shadow-xl">
@@ -230,15 +232,7 @@ export default function EmployeeDashboard() {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 lg:p-8 pt-24 lg:pt-8">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-2 text-gradient-luxury">
-                {t({ ar: "لوحة تحكم الموظف", en: "Employee Dashboard" })}
-              </h1>
-              <p className="text-muted-foreground">
-                {t({ ar: "إدارة الطلبات المسندة إليك", en: "Manage your assigned bookings" })}
-              </p>
-            </div>
+            {/* تم إزالة العنوان - سيظهر على المنيو */}
 
             {/* Quick Actions - Mobile Only */}
             <div className="lg:hidden grid grid-cols-2 gap-3 mb-6">

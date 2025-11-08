@@ -7,11 +7,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Palette, Moon, Sun } from "lucide-react";
+import { Palette, Moon, Sun, Monitor, Eye } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ThemeSelectorProps {
   isAdmin?: boolean;
@@ -19,9 +21,17 @@ interface ThemeSelectorProps {
 
 export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
   const { t } = useLanguage();
+  const { userRole } = useAuth();
+  const isMobile = useIsMobile();
   const [currentTheme, setCurrentTheme] = useState('design1');
-  const [isDark, setIsDark] = useState(false);
+  const [themeMode, setThemeMode] = useState<'light' | 'dark' | 'neutral' | 'comfort'>('light');
   const [loading, setLoading] = useState(false);
+  
+  // إظهار زر التصميم فقط للادمن (مدير)
+  const isManager = userRole === 'admin' || userRole === 'manager';
+  if (!isManager) {
+    return null;
+  }
 
   useEffect(() => {
     loadCurrentTheme();
@@ -38,14 +48,25 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
     if (data) {
       const theme = isAdmin ? (data as any).admin_theme : (data as any).user_theme;
       if (theme) {
-        const isDarkTheme = theme.includes('-dark');
-        setIsDark(isDarkTheme);
-        setCurrentTheme(theme.replace('-dark', ''));
+        // استخراج الوضع من اسم التصميم
+        if (theme.includes('-dark')) {
+          setThemeMode('dark');
+          setCurrentTheme(theme.replace('-dark', ''));
+        } else if (theme.includes('-neutral')) {
+          setThemeMode('neutral');
+          setCurrentTheme(theme.replace('-neutral', ''));
+        } else if (theme.includes('-comfort')) {
+          setThemeMode('comfort');
+          setCurrentTheme(theme.replace('-comfort', ''));
+        } else {
+          setThemeMode('light');
+          setCurrentTheme(theme);
+        }
       }
     }
   };
 
-  const applyTheme = async (theme: string, dark: boolean) => {
+  const applyTheme = async (theme: string, mode: 'light' | 'dark' | 'neutral' | 'comfort') => {
     setLoading(true);
     try {
       const { data: existingSettings } = await supabase
@@ -55,7 +76,7 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
         .limit(1)
         .maybeSingle();
 
-      const finalTheme = dark ? `${theme}-dark` : theme;
+      const finalTheme = mode === 'light' ? theme : `${theme}-${mode}`;
       const updateData = isAdmin 
         ? { admin_theme: finalTheme }
         : { user_theme: finalTheme };
@@ -75,7 +96,7 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
       }
 
       setCurrentTheme(theme);
-      setIsDark(dark);
+      setThemeMode(mode);
 
       toast({
         title: t({ ar: "تم التطبيق", en: "Applied" }),
@@ -98,13 +119,18 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
 
   const themes = isAdmin 
     ? [
-        { id: 'design1', name: t({ ar: 'تصميم 1 (الحالي)', en: 'Design 1 (Current)' }) },
-        { id: 'admin-design2', name: t({ ar: 'تصميم 2 (إنفوجرافيك)', en: 'Design 2 (Infographic)' }) },
+        { id: 'design1', name: t({ ar: 'تصميم 1', en: 'Design 1' }) },
+        { id: 'admin-design2', name: t({ ar: 'تصميم 2', en: 'Design 2' }) },
+        { id: 'admin-design3', name: t({ ar: 'تصميم 3', en: 'Design 3' }) },
+        { id: 'admin-design4', name: t({ ar: 'تصميم 4', en: 'Design 4' }) },
+        { id: 'admin-design5', name: t({ ar: 'تصميم 5', en: 'Design 5' }) },
       ]
     : [
-        { id: 'design1', name: t({ ar: 'تصميم 1 (الحالي)', en: 'Design 1 (Current)' }) },
-        { id: 'design2', name: t({ ar: 'تصميم 2 (أزرق)', en: 'Design 2 (Blue)' }) },
-        { id: 'design3', name: t({ ar: 'تصميم 3 (قريباً)', en: 'Design 3 (Soon)' }) },
+        { id: 'design1', name: t({ ar: 'تصميم 1', en: 'Design 1' }) },
+        { id: 'design2', name: t({ ar: 'تصميم 2', en: 'Design 2' }) },
+        { id: 'design3', name: t({ ar: 'تصميم 3', en: 'Design 3' }) },
+        { id: 'design4', name: t({ ar: 'تصميم 4', en: 'Design 4' }) },
+        { id: 'design5', name: t({ ar: 'تصميم 5', en: 'Design 5' }) },
       ];
 
   return (
@@ -113,11 +139,11 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2"
+          className={`gap-2 ${isMobile ? 'px-2' : ''}`}
           disabled={loading}
         >
-          <Palette className="w-4 h-4" />
-          {t({ ar: 'التصميم', en: 'Theme' })}
+          <Palette className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'}`} />
+          {!isMobile && t({ ar: 'التصميم', en: 'Theme' })}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -129,8 +155,7 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
         {themes.map((theme) => (
           <DropdownMenuItem
             key={theme.id}
-            onClick={() => applyTheme(theme.id, isDark)}
-            disabled={theme.id === 'design3'}
+            onClick={() => applyTheme(theme.id, themeMode)}
             className={currentTheme === theme.id ? 'bg-accent' : ''}
           >
             {theme.name}
@@ -143,19 +168,35 @@ export function ThemeSelector({ isAdmin = false }: ThemeSelectorProps) {
         </DropdownMenuLabel>
         
         <DropdownMenuItem
-          onClick={() => applyTheme(currentTheme, false)}
-          className={!isDark ? 'bg-accent' : ''}
+          onClick={() => applyTheme(currentTheme, 'light')}
+          className={themeMode === 'light' ? 'bg-accent' : ''}
         >
           <Sun className="w-4 h-4 ml-2" />
           {t({ ar: 'فاتح', en: 'Light' })}
         </DropdownMenuItem>
         
         <DropdownMenuItem
-          onClick={() => applyTheme(currentTheme, true)}
-          className={isDark ? 'bg-accent' : ''}
+          onClick={() => applyTheme(currentTheme, 'dark')}
+          className={themeMode === 'dark' ? 'bg-accent' : ''}
         >
           <Moon className="w-4 h-4 ml-2" />
           {t({ ar: 'داكن', en: 'Dark' })}
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem
+          onClick={() => applyTheme(currentTheme, 'neutral')}
+          className={themeMode === 'neutral' ? 'bg-accent' : ''}
+        >
+          <Monitor className="w-4 h-4 ml-2" />
+          {t({ ar: 'حيادي', en: 'Neutral' })}
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem
+          onClick={() => applyTheme(currentTheme, 'comfort')}
+          className={themeMode === 'comfort' ? 'bg-accent' : ''}
+        >
+          <Eye className="w-4 h-4 ml-2" />
+          {t({ ar: 'راحة', en: 'Comfort' })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
