@@ -612,6 +612,15 @@ export default function SiteSettings() {
       
       if (error) throw error;
 
+      // الحصول على معلومات النسخة الاحتياطية
+      const { data: settingsData } = await supabase
+        .from('site_settings')
+        .select('backup_version, backup_created_at')
+        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
       // إنشاء نسخة احتياطية شاملة جاهزة للتفعيل في cPanel أو local
       const fullBackup = {
         ...data,
@@ -619,8 +628,8 @@ export default function SiteSettings() {
           type: 'full_backup',
           ready_for_cpanel: true,
           ready_for_local: true,
-          created_at: new Date().toISOString(),
-          version: data.version || 1
+          created_at: settingsData?.backup_created_at || new Date().toISOString(),
+          version: settingsData?.backup_version || 1
         }
       };
 
