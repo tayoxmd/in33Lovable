@@ -48,10 +48,26 @@ async function uploadToCpanel(backupZipPath) {
     const fileName = path.basename(backupZipPath);
     console.log(`جاري رفع الملف: ${fileName}...`);
     
-    await client.uploadFrom(backupZipPath, `/var/www/u2890132/in33.in/${fileName}`);
+    // محاولة المسارات المختلفة
+    const remotePaths = ['/public_html', '/www', '/httpdocs'];
+    let uploaded = false;
     
-    console.log('✓ تم رفع الملف بنجاح إلى cPanel');
-    console.log(`الموقع على السيرفر: /var/www/u2890132/in33.in/${fileName}`);
+    for (const remotePath of remotePaths) {
+      try {
+        await client.cd(remotePath);
+        await client.uploadFrom(backupZipPath, `${remotePath}/${fileName}`);
+        console.log('✓ تم رفع الملف بنجاح إلى cPanel');
+        console.log(`الموقع على السيرفر: ${remotePath}/${fileName}`);
+        uploaded = true;
+        break;
+      } catch (e) {
+        continue;
+      }
+    }
+    
+    if (!uploaded) {
+      throw new Error('لم يتم العثور على مسار صحيح للرفع');
+    }
     
     return true;
   } catch (error) {
@@ -81,13 +97,41 @@ async function uploadFilesToCpanel() {
     
     console.log('✓ تم الاتصال بنجاح');
     
-    // الانتقال إلى مجلد الموقع
-    await client.cd('/var/www/u2890132/in33.in');
+    // الانتقال إلى مجلد الموقع (عادة public_html في cPanel)
+    const remotePath = '/public_html';
+    try {
+      await client.cd(remotePath);
+      console.log(`✓ تم الانتقال إلى ${remotePath}`);
+    } catch (error) {
+      // محاولة مسارات بديلة
+      const altPaths = ['/www', '/httpdocs', '/var/www/u2890132/in33.in'];
+      let found = false;
+      for (const altPath of altPaths) {
+        try {
+          await client.cd(altPath);
+          console.log(`✓ تم الانتقال إلى ${altPath}`);
+          found = true;
+          break;
+        } catch (e) {
+          continue;
+        }
+      }
+      if (!found) {
+        console.log('⚠ استخدام المسار الحالي');
+      }
+    }
     
-    console.log('جاري رفع الملفات من مجلد home...');
+    console.log('جاري رفع ملفات dist من مجلد home/dist...');
     
-    // رفع الملفات
-    await client.uploadFromDir(CONFIG.HOME_DIR, '/var/www/u2890132/in33.in');
+    // رفع ملفات dist فقط (الملفات المبنية)
+    const distPath = path.join(CONFIG.HOME_DIR, 'dist');
+    if (fs.existsSync(distPath)) {
+      await client.uploadFromDir(distPath, '.');
+      console.log('✓ تم رفع ملفات dist بنجاح');
+    } else {
+      console.log('⚠ مجلد dist غير موجود، جاري البناء...');
+      return false;
+    }
     
     console.log('✓ تم رفع جميع الملفات بنجاح');
     
