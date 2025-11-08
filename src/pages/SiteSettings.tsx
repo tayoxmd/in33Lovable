@@ -99,6 +99,11 @@ export default function SiteSettings() {
     version: number | null;
   }>({ created_at: null, version: null });
   const [showBackupManager, setShowBackupManager] = useState(false);
+  const [lovableBackupLoading, setLovableBackupLoading] = useState(false);
+  const [lovableBackupInfo, setLovableBackupInfo] = useState<{
+    created_at: string | null;
+    version: number | null;
+  }>({ created_at: null, version: null });
 
   useEffect(() => {
     if (!loading && userRole !== 'admin') {
