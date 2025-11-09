@@ -42,10 +42,15 @@ export function Header() {
   // الحصول على عنوان الصفحة الحالية
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/admin') return t({ ar: 'لوحة تحكم المدير', en: 'Admin Dashboard' });
-    if (path === '/employee') return t({ ar: 'لوحة تحكم الموظف', en: 'Employee Dashboard' });
-    if (path.startsWith('/admin/')) return t({ ar: 'الإدارة', en: 'Management' });
-    if (path.startsWith('/employee/')) return t({ ar: 'الموظف', en: 'Employee' });
+    if (path === '/admin') return t({ ar: 'لوحة التحكم', en: 'Dashboard' });
+    if (path === '/employee') return t({ ar: 'لوحة الموظف', en: 'Employee Panel' });
+    if (path === '/customer-dashboard') return t({ ar: 'حجوزاتي', en: 'My Bookings' });
+    if (path === '/my-tasks') return t({ ar: 'مهامي', en: 'My Tasks' });
+    if (path === '/task-manager') return t({ ar: 'إدارة المهام', en: 'Task Manager' });
+    if (path === '/private-accounting') return t({ ar: 'الحسابات', en: 'Accounting' });
+    if (path === '/manage-hotels') return t({ ar: 'الفنادق', en: 'Hotels' });
+    if (path === '/manage-employees') return t({ ar: 'المستخدمين', en: 'Users' });
+    if (path.startsWith('/booking/')) return t({ ar: 'حجز', en: 'Booking' });
     return '';
   };
 
@@ -53,155 +58,94 @@ export function Header() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 bg-card/40 backdrop-blur-lg border-b border-border/30 shadow-elegant ${isMobile ? 'h-14' : 'h-20'}`}>
-        <div className="container mx-auto px-4">
-          {/* أيقونات الرجوع والرئيسية للجوال - فوق المنيو */}
-          {isMobile && !isHomePage && (
-            <div className="flex items-center justify-between py-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 px-2"
-                onClick={() => navigate(-1)}
-              >
-                <ArrowLeft className="w-3 h-3" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 px-2"
-                onClick={() => navigate('/')}
-              >
-                <Home className="w-3 h-3" />
-              </Button>
-            </div>
-          )}
-
-          <div className={`flex items-center justify-between ${isMobile ? 'h-10' : 'h-20'}`}>
-            {/* Logo */}
+      <header className={`fixed top-0 left-0 right-0 z-50 bg-card/40 backdrop-blur-lg border-b border-border/30 shadow-elegant h-14`}>
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="flex items-center justify-between h-14">
+            {/* Logo + Page Title */}
             <div className="flex items-center gap-2">
-              <Link to="/" className="flex items-center gap-2 sm:gap-3">
+              <Link to="/" className="flex items-center">
                 <img 
                   src={logo} 
-                  alt="IN33 Logo" 
-                  className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16 sm:w-20 sm:h-20'} object-contain bg-transparent border-0`}
+                  alt="IN33" 
+                  className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
                 />
               </Link>
-              {/* عنوان الصفحة للجوال والتابلت */}
-              {(isMobile || isTablet) && pageTitle && (
-                <span className="text-xs text-muted-foreground truncate max-w-[120px]">
+              {pageTitle && (
+                <span className="text-sm font-semibold text-foreground truncate max-w-[100px] sm:max-w-[150px]">
                   {pageTitle}
                 </span>
               )}
             </div>
 
-            {/* Desktop Navigation - تم إزالة الروابط */}
-            <nav className="hidden md:flex items-center gap-8">
-              {/* تم إزالة الروابط: الرئيسية، الفنادق، العروض، من نحن */}
-            </nav>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2">
-              {/* Theme Selector - Always visible, scaled down on mobile */}
-              <div className="scale-75 sm:scale-90 md:scale-100">
-                <ThemeSelector />
-              </div>
-              
-              {/* Language Selector - Always visible, scaled down on mobile */}
+            {/* Right Actions: Language + Theme + Notifications + Menu */}
+            <div className="flex items-center gap-1 sm:gap-2">
+              {/* Language Selector */}
               <div className="scale-75 sm:scale-90 md:scale-100">
                 <LanguageSelector />
+              </div>
+              
+              {/* Theme Selector */}
+              <div className="scale-75 sm:scale-90 md:scale-100">
+                <ThemeSelector />
               </div>
               
               {/* Notification Bell */}
               <NotificationBell />
 
-              {/* أيقونات الرجوع والرئيسية للتابلت وسطح المكتب - داخل المنيو */}
-              {!isMobile && !isHomePage && (
-                <div className="hidden md:flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => navigate(-1)}
-                    title={t({ ar: 'الرجوع', en: 'Back' })}
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => navigate('/')}
-                    title={t({ ar: 'الرئيسية', en: 'Home' })}
-                  >
-                    <Home className="w-4 h-4" />
-                  </Button>
-                </div>
-              )}
-
-              {/* عنوان الصفحة لسطح المكتب */}
-              {!isMobile && !isTablet && pageTitle && (
-                <span className="text-sm text-muted-foreground hidden lg:block">
-                  {pageTitle}
-                </span>
-              )}
-
-                {user ? (
+              {user ? (
                 <>
                   <div className="hidden lg:flex items-center gap-2">
-              {(userRole === 'admin' || userRole === 'manager' || userRole === 'employee' || userRole === 'company') && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500 relative"
-                  onClick={() => navigate('/my-tasks')}
-                >
-                  <LayoutDashboard className="w-4 h-4" />
-                  {t({ ar: 'المهام', en: 'Tasks' })}
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                  </span>
-                </Button>
-              )}
+                    {(userRole === 'admin' || userRole === 'manager' || userRole === 'employee' || userRole === 'company') && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2 bg-green-500 hover:bg-green-600 text-white border-green-500 relative h-8 text-xs"
+                        onClick={() => navigate('/my-tasks')}
+                      >
+                        <LayoutDashboard className="w-3 h-3" />
+                        {t({ ar: 'المهام', en: 'Tasks' })}
+                        <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                      </Button>
+                    )}
 
                     {(userRole === 'admin' || userRole === 'employee') && (
-                      <>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-2"
-                          style={{ backgroundColor: '#237bff', color: 'white', borderColor: '#237bff' }}
-                          onClick={() => navigate(getDashboardPath())}
-                        >
-                          <LayoutDashboard className="w-4 h-4" />
-                          {t('الإدارة', 'Management')}
-                        </Button>
-                      </>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2 h-8 text-xs"
+                        style={{ backgroundColor: '#237bff', color: 'white', borderColor: '#237bff' }}
+                        onClick={() => navigate(getDashboardPath())}
+                      >
+                        <LayoutDashboard className="w-3 h-3" />
+                        {t('الإدارة', 'Management')}
+                      </Button>
                     )}
                     
                     <Button
                       variant="outline"
                       size="sm"
-                      className="gap-2"
+                      className="gap-2 h-8 text-xs"
                       onClick={() => navigate('/customer-dashboard')}
                     >
-                      <LayoutDashboard className="w-4 h-4" />
+                      <LayoutDashboard className="w-3 h-3" />
                       {t({ ar: "الحجوزات", en: "Bookings" })}
                     </Button>
 
                     <Button
                       variant="outline"
                       size="sm"
-                      className="gap-2"
+                      className="gap-2 h-8 text-xs"
                       onClick={() => signOut()}
                     >
-                      <LogOut className="w-4 h-4" />
-                      {t('تسجيل الخروج', 'Sign Out')}
+                      <LogOut className="w-3 h-3" />
+                      {t('خروج', 'Out')}
                     </Button>
                   </div>
                   
-                  {/* Mobile/Tablet Quick Actions - Outside Menu */}
+                  {/* Mobile/Tablet Quick Actions */}
                   <div className="lg:hidden flex items-center gap-1">
                     <Button
                       variant="outline"
@@ -218,18 +162,18 @@ export function Header() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="hidden sm:inline-flex"
+                    className="hidden sm:inline-flex h-7 text-xs"
                     onClick={() => navigate('/auth?mode=login')}
                   >
-                    {t('تسجيل الدخول', 'Sign In')}
+                    {t('دخول', 'Sign In')}
                   </Button>
 
                   <Button
                     size="sm"
-                    className="btn-luxury hidden sm:inline-flex"
+                    className="btn-luxury hidden sm:inline-flex h-7 text-xs"
                     onClick={() => navigate('/auth?mode=signup')}
                   >
-                    {t('سجل الآن', 'Sign Up')}
+                    {t('تسجيل', 'Sign Up')}
                   </Button>
                 </>
               )}
@@ -238,10 +182,10 @@ export function Header() {
               <Button
                 variant="outline"
                 size="sm"
-                className="lg:hidden"
+                className="lg:hidden h-7 w-7 p-0"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </Button>
             </div>
           </div>

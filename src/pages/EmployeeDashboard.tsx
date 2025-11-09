@@ -9,6 +9,7 @@ import { BookingManagement } from "@/components/BookingManagement";
 import { playNotificationSound } from "@/utils/notificationSound";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { getCurrencySymbol } from "@/utils/currency";
 import { 
   FileText, 
   Clock, 
@@ -17,8 +18,22 @@ import {
   TrendingDown,
   User,
   Home,
-  LayoutDashboard
+  LayoutDashboard,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import logo from "@/assets/logo-transparent.png";
 
 export default function EmployeeDashboard() {
@@ -27,6 +42,7 @@ export default function EmployeeDashboard() {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<any[]>([]);
   const [loadingBookings, setLoadingBookings] = useState(true);
+  const [showBookings, setShowBookings] = useState(false);
   const [stats, setStats] = useState({
     totalAssigned: 0,
     pending: 0,
@@ -74,13 +90,11 @@ export default function EmployeeDashboard() {
   const checkPrivateAccountingAccess = async () => {
     if (!user) return;
     
-    // Check if user is manager/admin
     if (userRole === 'manager' || userRole === 'admin') {
       setHasPrivateAccountingAccess(true);
       return;
     }
 
-    // Check if user has explicit access
     const { data } = await supabase
       .from('private_account_access')
       .select('user_id')
@@ -93,13 +107,11 @@ export default function EmployeeDashboard() {
   const checkTaskAccess = async () => {
     if (!user) return;
     
-    // Check if user is manager/admin
     if (userRole === 'manager' || userRole === 'admin') {
       setHasTaskAccess(true);
       return;
     }
 
-    // Check if user has explicit access
     const { data } = await supabase
       .from('task_full_access_users')
       .select('user_id')
@@ -124,7 +136,6 @@ export default function EmployeeDashboard() {
       if (error) throw error;
       setBookings(data || []);
       
-      // Calculate stats
       const pending = data?.filter(b => b.status === 'new' || b.status === 'pending').length || 0;
       const confirmed = data?.filter(b => b.status === 'confirmed').length || 0;
       
@@ -147,187 +158,183 @@ export default function EmployeeDashboard() {
 
   const StatCard = ({ title, value, icon: Icon, change, colorClass }: any) => (
     <Card className="card-luxury hover-lift transition-all rounded-md">
-      <CardContent className="pt-6">
+      <CardContent className="pt-4 pb-4">
         <div className="flex items-start justify-between">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-muted-foreground">{title}</p>
             <div className="flex items-baseline gap-2">
-              <h3 className="text-3xl font-bold">{value}</h3>
+              <h3 className="text-xl font-bold">{value}</h3>
               {change !== undefined && change !== 0 && (
-                <div className={`flex items-center text-sm font-medium ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {change >= 0 ? <TrendingUp className="w-4 h-4 ml-1" /> : <TrendingDown className="w-4 h-4 ml-1" />}
+                <div className={`flex items-center text-xs font-medium ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {change >= 0 ? <TrendingUp className="w-3 h-3 ml-1" /> : <TrendingDown className="w-3 h-3 ml-1" />}
                   <span>{Math.abs(change)}%</span>
                 </div>
               )}
             </div>
           </div>
-          <div className={`p-3 rounded-md ${colorClass}`}>
-            <Icon className="w-6 h-6 text-white" />
+          <div className={`p-2 rounded-md ${colorClass}`}>
+            <Icon className="w-5 h-5 text-white" />
           </div>
         </div>
       </CardContent>
     </Card>
   );
 
-  const NavItem = ({ icon: Icon, label, onClick }: any) => (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-3 w-full px-4 py-3 rounded-lg hover:bg-primary/10 transition-colors text-right"
-    >
-      <Icon className="w-5 h-5 text-primary" />
-      <span className="font-medium">{label}</span>
-    </button>
+  const sidebarSide = language === "ar" ? "right" : "left";
+  const borderClass = language === "ar" ? "border-l" : "border-r";
+
+  const EmployeeSidebar = () => (
+    <Sidebar side={sidebarSide} className={`${borderClass} z-50`} collapsible="icon">
+      <SidebarContent>
+        <div className="p-4 border-b border-border flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="IN33" className="w-8 h-8 object-contain" />
+            <div className="group-data-[collapsible=icon]:hidden">
+              <h2 className="font-bold text-sm">{t({ ar: "IN33", en: "IN33" })}</h2>
+              <p className="text-xs text-muted-foreground">{t({ ar: "لوحة الموظف", en: "Employee" })}</p>
+            </div>
+          </div>
+          <SidebarTrigger className="group-data-[collapsible=icon]:mx-auto" />
+        </div>
+        
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs">{t({ ar: 'القائمة', en: 'Menu' })}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={() => navigate('/')} className="text-sm">
+                  <Home className="w-4 h-4" />
+                  <span>{t({ ar: "الرئيسية", en: "Home" })}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              {hasTaskAccess && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={() => navigate('/my-tasks')} className="text-sm">
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>{t({ ar: "المهام", en: "Tasks" })}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={() => navigate('/employee')} className="text-sm">
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>{t({ ar: "الإدارة", en: "Management" })}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              {hasPrivateAccountingAccess && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={() => navigate('/private-accounting')} className="text-sm">
+                    <FileText className="w-4 h-4" />
+                    <span>{t({ ar: "الحسابات الخاصة", en: "Private Accounting" })}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={() => navigate('/profile')} className="text-sm">
+                  <User className="w-4 h-4" />
+                  <span>{t({ ar: "الملف الشخصي", en: "Profile" })}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
       <Header />
-      <div className="flex h-screen">
-        {/* Sidebar */}
-        <aside className="hidden lg:flex flex-col w-64 bg-card border-l border-border shadow-xl">
-          <div className="p-6 border-b border-border">
-            <div className="flex items-center gap-3">
-              <img src={logo} alt="IN33 Logo" className="w-10 h-10 object-contain bg-transparent border-0" />
-              <div>
-                <h2 className="font-bold text-lg">{t({ ar: "IN33", en: "IN33" })}</h2>
-                <p className="text-xs text-muted-foreground">{t({ ar: "لوحة الموظف", en: "Employee Panel" })}</p>
-              </div>
-            </div>
-          </div>
+      
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex min-h-screen w-full">
+          <EmployeeSidebar />
           
-          <nav className="flex-1 p-4 space-y-2">
-            <NavItem 
-              icon={Home} 
-              label={t({ ar: "الرئيسية", en: "Home" })}
-              onClick={() => navigate('/')}
-            />
-            {hasTaskAccess && (
-              <NavItem 
-                icon={LayoutDashboard} 
-                label={t({ ar: "المهام", en: "Tasks" })}
-                onClick={() => navigate('/my-tasks')}
-              />
-            )}
-            <NavItem 
-              icon={LayoutDashboard} 
-              label={t({ ar: "الإدارة", en: "Management" })}
-              onClick={() => navigate('/employee')}
-            />
-            {hasPrivateAccountingAccess && (
-              <NavItem 
-                icon={FileText} 
-                label={t({ ar: "الحسابات الخاصة", en: "Private Accounting" })}
-                onClick={() => navigate('/private-accounting')}
-              />
-            )}
-            <NavItem 
-              icon={User} 
-              label={t({ ar: "الملف الشخصي", en: "Profile" })}
-              onClick={() => navigate('/profile')}
-            />
-          </nav>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="p-4 lg:p-8 pt-24 lg:pt-8">
-            {/* تم إزالة العنوان - سيظهر على المنيو */}
-
-            {/* Quick Actions - Mobile Only */}
-            <div className="lg:hidden grid grid-cols-2 gap-3 mb-6">
-              <Button onClick={() => navigate('/')} variant="outline" className="h-20 flex-col gap-2 rounded-md">
-                <Home className="w-5 h-5" />
-                <span className="text-xs">{t({ ar: "الرئيسية", en: "Home" })}</span>
-              </Button>
-              {hasTaskAccess && (
-                <Button onClick={() => navigate('/my-tasks')} variant="outline" className="h-20 flex-col gap-2 rounded-md bg-green-500 hover:bg-green-600 text-white border-green-500">
-                  <LayoutDashboard className="w-5 h-5" />
-                  <span className="text-xs">{t({ ar: "المهام", en: "Tasks" })}</span>
+          <main className="flex-1 overflow-y-auto transition-all duration-300">
+            <div className="p-4 lg:p-6 pt-20 lg:pt-6 max-w-[1600px] mx-auto">
+              {/* Quick Actions - Mobile Only */}
+              <div className="lg:hidden grid grid-cols-2 gap-2 mb-4">
+                <Button onClick={() => navigate('/')} variant="outline" className="h-16 flex-col gap-1 text-xs">
+                  <Home className="w-4 h-4" />
+                  <span>{t({ ar: "الرئيسية", en: "Home" })}</span>
                 </Button>
-              )}
-              <Button onClick={() => navigate('/employee')} variant="outline" className="h-20 flex-col gap-2 rounded-md" style={{ backgroundColor: '#237bff', color: 'white', borderColor: '#237bff' }}>
-                <LayoutDashboard className="w-5 h-5" />
-                <span className="text-xs">{t({ ar: "الإدارة", en: "Management" })}</span>
-              </Button>
-              {hasPrivateAccountingAccess ? (
-                <Button onClick={() => navigate('/private-accounting')} variant="outline" className="h-20 flex-col gap-2 rounded-md">
-                  <FileText className="w-5 h-5" />
-                  <span className="text-xs">{t({ ar: "الحسابات الخاصة", en: "Private Accounting" })}</span>
-                </Button>
-              ) : (
-                <Button onClick={() => navigate('/profile')} variant="outline" className="h-20 flex-col gap-2 rounded-md">
-                  <User className="w-5 h-5" />
-                  <span className="text-xs">{t({ ar: "الملف", en: "Profile" })}</span>
-                </Button>
-              )}
-            </div>
-
-            {/* Interactive Stats Dashboard - Mobile */}
-            <div className="lg:hidden grid grid-cols-2 gap-3 mb-6">
-              <Card className="rounded-md hover-lift transition-all bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900">
-                <CardContent className="p-4 flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center mb-2">
-                    <Clock className="w-8 h-8 text-white" />
-                  </div>
-                  <p className="text-xs text-muted-foreground text-center">{t({ ar: "قيد الانتظار", en: "Pending" })}</p>
-                  <p className="text-sm font-bold text-center">{stats.pending}</p>
-                </CardContent>
-              </Card>
-              <Card className="rounded-md hover-lift transition-all bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900">
-                <CardContent className="p-4 flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center mb-2">
-                    <CheckCircle className="w-8 h-8 text-white" />
-                  </div>
-                  <p className="text-xs text-muted-foreground text-center">{t({ ar: "مؤكد", en: "Confirmed" })}</p>
-                  <p className="text-sm font-bold text-center">{stats.confirmed}</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
-              <StatCard
-                title={t({ ar: "الطلبات المسندة", en: "Assigned Bookings" })}
-                value={stats.totalAssigned}
-                icon={FileText}
-                change={undefined}
-                colorClass="bg-gradient-to-br from-blue-500 to-blue-600"
-              />
-              <StatCard
-                title={t({ ar: "قيد الانتظار", en: "Pending" })}
-                value={stats.pending}
-                icon={Clock}
-                change={stats.pendingChange}
-                colorClass="bg-gradient-to-br from-orange-500 to-orange-600"
-              />
-              <StatCard
-                title={t({ ar: "تم التأكيد", en: "Confirmed" })}
-                value={stats.confirmed}
-                icon={CheckCircle}
-                change={undefined}
-                colorClass="bg-gradient-to-br from-green-500 to-green-600"
-              />
-            </div>
-
-            {/* Bookings Table */}
-            <Card className="card-luxury rounded-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
-                  {t({ ar: "الطلبات المسندة إليك", en: "Assigned Bookings" })}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {loadingBookings ? (
-                  <div className="flex justify-center py-8"><LoadingSpinner size="md" /></div>
-                ) : (
-                  <BookingManagement bookings={bookings} onUpdate={fetchBookings} />
+                {hasTaskAccess && (
+                  <Button onClick={() => navigate('/my-tasks')} variant="outline" className="h-16 flex-col gap-1 text-xs bg-green-500 hover:bg-green-600 text-white border-green-500">
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>{t({ ar: "المهام", en: "Tasks" })}</span>
+                  </Button>
                 )}
-              </CardContent>
-            </Card>
-          </div>
-        </main>
-      </div>
+                <Button onClick={() => navigate('/employee')} variant="outline" className="h-16 flex-col gap-1 text-xs" style={{ backgroundColor: '#237bff', color: 'white', borderColor: '#237bff' }}>
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>{t({ ar: "الإدارة", en: "Management" })}</span>
+                </Button>
+                {hasPrivateAccountingAccess ? (
+                  <Button onClick={() => navigate('/private-accounting')} variant="outline" className="h-16 flex-col gap-1 text-xs">
+                    <FileText className="w-4 h-4" />
+                    <span>{t({ ar: "الحسابات", en: "Accounting" })}</span>
+                  </Button>
+                ) : (
+                  <Button onClick={() => navigate('/profile')} variant="outline" className="h-16 flex-col gap-1 text-xs">
+                    <User className="w-4 h-4" />
+                    <span>{t({ ar: "الملف", en: "Profile" })}</span>
+                  </Button>
+                )}
+              </div>
+
+              {/* Stats Cards - 2 per row on mobile */}
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 mb-4 lg:mb-6">
+                <StatCard
+                  title={t({ ar: "الطلبات المسندة", en: "Assigned" })}
+                  value={stats.totalAssigned}
+                  icon={FileText}
+                  change={undefined}
+                  colorClass="bg-gradient-to-br from-blue-500 to-blue-600"
+                />
+                <StatCard
+                  title={t({ ar: "قيد الانتظار", en: "Pending" })}
+                  value={stats.pending}
+                  icon={Clock}
+                  change={stats.pendingChange}
+                  colorClass="bg-gradient-to-br from-orange-500 to-orange-600"
+                />
+                <StatCard
+                  title={t({ ar: "تم التأكيد", en: "Confirmed" })}
+                  value={stats.confirmed}
+                  icon={CheckCircle}
+                  change={undefined}
+                  colorClass="bg-gradient-to-br from-green-500 to-green-600"
+                />
+              </div>
+
+              {/* Bookings - Collapsible */}
+              <Card className="card-luxury rounded-md">
+                <CardHeader className="pb-2 lg:pb-3">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between p-0 h-auto hover:bg-transparent"
+                    onClick={() => setShowBookings(!showBookings)}
+                  >
+                    <CardTitle className="flex items-center gap-2 text-sm lg:text-base">
+                      <FileText className="w-4 h-4 lg:w-5 lg:h-5" />
+                      {t({ ar: "الطلبات المسندة", en: "Assigned Bookings" })}
+                    </CardTitle>
+                    {showBookings ? <ChevronUp className="w-4 h-4 lg:w-5 lg:h-5" /> : <ChevronDown className="w-4 h-4 lg:w-5 lg:h-5" />}
+                  </Button>
+                </CardHeader>
+                {showBookings && (
+                  <CardContent className="pt-0">
+                    {loadingBookings ? (
+                      <div className="flex justify-center py-8"><LoadingSpinner size="md" /></div>
+                    ) : (
+                      <BookingManagement bookings={bookings} onUpdate={fetchBookings} />
+                    )}
+                  </CardContent>
+                )}
+              </Card>
+            </div>
+          </main>
+        </div>
+      </SidebarProvider>
     </div>
   );
 }

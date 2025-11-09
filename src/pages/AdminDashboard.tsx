@@ -27,10 +27,14 @@ import {
   Calendar,
   MessageSquare,
   Clapperboard,
-  Mail
+  Mail,
+  Bus,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { playNotificationSound } from "@/utils/notificationSound";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { getCurrencySymbol } from "@/utils/currency";
 import {
   Sheet,
   SheetContent,
@@ -48,6 +52,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import logo from "@/assets/logo-transparent.png";
@@ -60,6 +65,7 @@ export default function AdminDashboard() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loadingBookings, setLoadingBookings] = useState(true);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
+  const [showRecentBookings, setShowRecentBookings] = useState(false);
   const [stats, setStats] = useState({
     totalBookings: 0,
     pending: 0,
@@ -150,12 +156,10 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      // Total bookings count
       const { count: totalCount } = await supabase
         .from('bookings')
         .select('*', { count: 'exact', head: true });
 
-      // Pending bookings count (new + pending)
       const { count: newCount } = await supabase
         .from('bookings')
         .select('*', { count: 'exact', head: true })
@@ -166,19 +170,16 @@ export default function AdminDashboard() {
         .select('*', { count: 'exact', head: true })
         .eq('status', 'pending');
 
-      // Confirmed bookings count
       const { count: confirmedCount } = await supabase
         .from('bookings')
         .select('*', { count: 'exact', head: true })
         .eq('status', 'confirmed');
 
-      // Total customers
       const { data: customerRoles } = await supabase
         .from('user_roles')
         .select('user_id')
         .eq('role', 'customer');
 
-      // Financial stats
       const { data: allBookings } = await supabase
         .from('bookings')
         .select('total_amount, amount_paid, payment_status, status');
@@ -196,7 +197,6 @@ export default function AdminDashboard() {
             totalRevenue += booking.amount_paid || 0;
           } else if (booking.payment_status === 'partially_paid') {
             totalRevenue += booking.amount_paid || 0;
-            // Calculate pending payment (remaining amount)
             pendingPayments += (booking.total_amount - (booking.amount_paid || 0));
           } else if (booking.payment_status === 'unpaid') {
             pendingPayments += booking.total_amount || 0;
@@ -230,17 +230,16 @@ export default function AdminDashboard() {
     return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
   }
 
-  // BigStatCard Component for main financial stats
   const BigStatCard = ({ title, value, icon: Icon, colorClass }: any) => (
     <Card className="card-luxury hover-lift transition-all">
-      <CardContent className="pt-6">
+      <CardContent className="pt-4 pb-4">
         <div className="flex items-start justify-between">
-          <div className="space-y-2 flex-1">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <h3 className="text-3xl font-bold">{value}</h3>
+          <div className="space-y-1 flex-1">
+            <p className="text-xs font-medium text-muted-foreground">{title}</p>
+            <h3 className="text-xl lg:text-2xl font-bold">{value}</h3>
           </div>
-          <div className={`p-4 rounded-lg ${colorClass}`}>
-            <Icon className="w-8 h-8 text-white" />
+          <div className={`p-2 lg:p-3 rounded-lg ${colorClass}`}>
+            <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
           </div>
         </div>
       </CardContent>
@@ -249,47 +248,45 @@ export default function AdminDashboard() {
 
   const StatCard = ({ title, value, icon: Icon, colorClass }: any) => (
     <Card className="card-luxury hover-lift transition-all rounded-md">
-      <CardContent className="pt-6">
+      <CardContent className="pt-4 pb-4">
         <div className="flex items-start justify-between">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <div className="flex items-baseline gap-2">
-              <h3 className="text-2xl lg:text-3xl font-bold">{value}</h3>
-            </div>
+          <div className="space-y-1">
+            <p className="text-xs font-medium text-muted-foreground">{title}</p>
+            <h3 className="text-lg lg:text-xl font-bold">{value}</h3>
           </div>
-          <div className={`p-3 rounded-md ${colorClass}`}>
-            <Icon className="w-6 h-6 text-white" />
+          <div className={`p-2 rounded-md ${colorClass}`}>
+            <Icon className="w-5 h-5 text-white" />
           </div>
         </div>
       </CardContent>
     </Card>
   );
 
-  // Admin Sidebar Component (Desktop only)
   const sidebarSide = language === "ar" ? "right" : "left";
   const borderClass = language === "ar" ? "border-l" : "border-r";
   
   const AdminSidebar = () => (
-    <Sidebar side={sidebarSide} className={`${borderClass} z-50`}>
+    <Sidebar side={sidebarSide} className={`${borderClass} z-50`} collapsible="icon">
       <SidebarContent>
-        <div className="p-6 border-b border-border">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="IN33 Logo" className="w-10 h-10 object-contain bg-transparent border-0" />
-            <div>
-              <h2 className="font-bold text-lg">{t({ ar: "IN33", en: "IN33" })}</h2>
+        <div className="p-4 border-b border-border flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="IN33" className="w-8 h-8 object-contain" />
+            <div className="group-data-[collapsible=icon]:hidden">
+              <h2 className="font-bold text-sm">{t({ ar: "IN33", en: "IN33" })}</h2>
               <p className="text-xs text-muted-foreground">{t({ ar: "لوحة التحكم", en: "Dashboard" })}</p>
             </div>
           </div>
+          <SidebarTrigger className="group-data-[collapsible=icon]:mx-auto" />
         </div>
         
         <SidebarGroup>
-          <SidebarGroupLabel>{t({ ar: 'إدارة الموقع', en: 'Site Management' })}</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs">{t({ ar: 'إدارة الموقع', en: 'Site Management' })}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {adminMenuItems.map((item) => (
                 <SidebarMenuItem key={item.path}>
-                  <SidebarMenuButton onClick={() => navigate(item.path)}>
-                    <item.icon className="w-5 h-5" />
+                  <SidebarMenuButton onClick={() => navigate(item.path)} className="text-sm">
+                    <item.icon className="w-4 h-4" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -301,181 +298,175 @@ export default function AdminDashboard() {
     </Sidebar>
   );
 
+  const currency = getCurrencySymbol(language);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
       <Header />
       {isMobile ? (
-        // Mobile: Sheet Menu
         <div className="flex h-screen">
-            <main className="flex-1 overflow-y-auto">
-            <div className="p-4 pt-24">
-              {/* Header with Site Management Button */}
-              <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                {/* تم إزالة العنوان - سيظهر على المنيو */}
-                
+          <main className="flex-1 overflow-y-auto">
+            <div className="p-3 pt-20">
+              <div className="mb-4 flex items-center gap-2">
                 <Sheet open={adminMenuOpen} onOpenChange={setAdminMenuOpen}>
                   <SheetTrigger asChild>
-                    <div className="flex gap-2">
-                      <Button
-                        className="gap-2 shadow-lg"
-                        style={{ backgroundColor: '#237bff', color: 'white', borderColor: '#237bff' }}
-                      >
-                        <Settings className="w-4 h-4" />
-                        {t({ ar: "إدارة الموقع", en: "Site Management" })}
-                      </Button>
-                      <Button variant="outline" className="gap-2" onClick={() => navigate('/')}> 
-                        <Home className="w-4 h-4" />
-                        {t({ ar: "الرئيسية", en: "Home" })}
-                      </Button>
-                    </div>
+                    <Button className="gap-2 text-xs h-8" style={{ backgroundColor: '#237bff', color: 'white' }}>
+                      <Settings className="w-3 h-3" />
+                      {t({ ar: "إدارة متكاملة", en: "Management" })}
+                    </Button>
                   </SheetTrigger>
-                  <SheetContent side={language === 'ar' ? 'right' : 'left'} className="w-[280px] sm:w-[350px] overflow-y-auto">
+                  <SheetContent side={language === 'ar' ? 'right' : 'left'} className="w-[280px] overflow-y-auto">
                     <SheetHeader>
-                      <SheetTitle>{t({ ar: 'إدارة الموقع', en: 'Site Management' })}</SheetTitle>
+                      <SheetTitle className="text-sm">{t({ ar: 'إدارة متكاملة', en: 'Integrated Management' })}</SheetTitle>
                     </SheetHeader>
-                    <div className="mt-6 space-y-2 pb-6">
+                    <div className="mt-4 space-y-1">
                       {adminMenuItems.map((item) => (
                         <Button
                           key={item.path}
                           variant="ghost"
-                          className="w-full justify-start gap-3 h-12"
+                          className="w-full justify-start gap-2 h-9 text-xs"
                           onClick={() => {
                             navigate(item.path);
                             setAdminMenuOpen(false);
                           }}
                         >
-                          <item.icon className="w-5 h-5" />
-                          <span className="text-base">{item.label}</span>
+                          <item.icon className="w-4 h-4" />
+                          <span>{item.label}</span>
                         </Button>
                       ))}
                     </div>
                   </SheetContent>
                 </Sheet>
+                <Button variant="outline" className="gap-2 text-xs h-8" onClick={() => navigate('/')}> 
+                  <Home className="w-3 h-3" />
+                  {t({ ar: "الرئيسية", en: "Home" })}
+                </Button>
               </div>
 
-              {/* Financial Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <BigStatCard
-                title={t({ ar: "الأرباح", en: "Profits" })}
-                value={`${stats.profits || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
-                icon={TrendingUp}
-                colorClass="bg-gradient-to-br from-emerald-500 to-emerald-600"
-              />
-              <BigStatCard
-                title={t({ ar: "في انتظار الدفع", en: "Pending Payment" })}
-                value={`${stats.pendingPayments || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
-                icon={Clock}
-                colorClass="bg-gradient-to-br from-amber-500 to-amber-600"
-              />
-              <BigStatCard
-                title={t({ ar: "إجمالي قيمة الطلبات", en: "Total Bookings Value" })}
-                value={`${stats.totalBookingsValue || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
-                icon={FileText}
-                colorClass="bg-gradient-to-br from-sky-500 to-sky-600"
-              />
-              <BigStatCard
-                title={t({ ar: "الخسائر", en: "Losses" })}
-                value={`${stats.losses || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
-                icon={TrendingDown}
-                colorClass="bg-gradient-to-br from-rose-500 to-rose-600"
-              />
-            </div>
+              {/* Financial Stats - 2 per row on mobile */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <BigStatCard
+                  title={t({ ar: "إجمالي الطلبات", en: "Total Orders" })}
+                  value={stats.totalBookings}
+                  icon={Briefcase}
+                  colorClass="bg-gradient-to-br from-purple-500 to-purple-600"
+                />
+                <BigStatCard
+                  title={t({ ar: "الباصات النشطة", en: "Active Buses" })}
+                  value={stats.confirmed}
+                  icon={Bus}
+                  colorClass="bg-gradient-to-br from-blue-500 to-blue-600"
+                />
+                <BigStatCard
+                  title={t({ ar: "العملاء", en: "Customers" })}
+                  value={stats.totalCustomers}
+                  icon={Users}
+                  colorClass="bg-gradient-to-br from-cyan-500 to-cyan-600"
+                />
+                <BigStatCard
+                  title={t({ ar: "الأرباح", en: "Profits" })}
+                  value={`${stats.profits || 0} ${currency}`}
+                  icon={TrendingUp}
+                  colorClass="bg-gradient-to-br from-emerald-500 to-emerald-600"
+                />
+              </div>
 
-            {/* Stats Grid - Detailed */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-              <StatCard
-                title={t({ ar: "إجمالي الحجوزات", en: "Total Bookings" })}
-                value={stats.totalBookings}
-                icon={Briefcase}
-                colorClass="bg-gradient-to-br from-purple-500 to-purple-600"
-              />
-              <StatCard
-                title={t({ ar: "قيد الانتظار", en: "Pending" })}
-                value={stats.pending}
-                icon={Clock}
-                colorClass="bg-gradient-to-br from-orange-500 to-orange-600"
-              />
-              <StatCard
-                title={t({ ar: "مؤكد", en: "Confirmed" })}
-                value={stats.confirmed}
-                icon={CheckCircle}
-                colorClass="bg-gradient-to-br from-green-500 to-green-600"
-              />
-              <StatCard
-                title={t({ ar: "عدد العملاء", en: "Customers" })}
-                value={stats.totalCustomers}
-                icon={Users}
-                colorClass="bg-gradient-to-br from-blue-500 to-blue-600"
-              />
-            </div>
+              {/* Status Cards - 2 per row */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <StatCard
+                  title={t({ ar: "قيد الانتظار", en: "Pending" })}
+                  value={stats.pending}
+                  icon={Clock}
+                  colorClass="bg-gradient-to-br from-orange-500 to-orange-600"
+                />
+                <StatCard
+                  title={t({ ar: "مؤكد", en: "Confirmed" })}
+                  value={stats.confirmed}
+                  icon={CheckCircle}
+                  colorClass="bg-gradient-to-br from-green-500 to-green-600"
+                />
+              </div>
 
-              {/* Recent Bookings */}
+              {/* Financial Details - 2 per row */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <StatCard
+                  title={t({ ar: "الإيرادات المكتملة", en: "Completed Revenue" })}
+                  value={`${stats.totalRevenue || 0} ${currency}`}
+                  icon={DollarSign}
+                  colorClass="bg-gradient-to-br from-green-500 to-green-600"
+                />
+                <StatCard
+                  title={t({ ar: "الإيرادات المتوقعة", en: "Expected Revenue" })}
+                  value={`${stats.pendingPayments || 0} ${currency}`}
+                  icon={Clock}
+                  colorClass="bg-gradient-to-br from-amber-500 to-amber-600"
+                />
+              </div>
+
+              {/* Recent Bookings - Collapsible */}
               <Card className="card-luxury">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5" />
-                    {t({ ar: "أحدث الحجوزات", en: "Recent Bookings" })}
-                  </CardTitle>
+                <CardHeader className="pb-2">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between p-0 h-auto"
+                    onClick={() => setShowRecentBookings(!showRecentBookings)}
+                  >
+                    <CardTitle className="flex items-center gap-2 text-sm">
+                      <FileText className="w-4 h-4" />
+                      {t({ ar: "أحدث الطلبات", en: "Recent Orders" })}
+                    </CardTitle>
+                    {showRecentBookings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </Button>
                 </CardHeader>
-                <CardContent>
-                  {loadingBookings ? (
-                    <div className="flex justify-center py-8"><LoadingSpinner size="md" /></div>
-                  ) : (
-                    <BookingManagement bookings={bookings} onUpdate={fetchBookings} />
-                  )}
-                </CardContent>
+                {showRecentBookings && (
+                  <CardContent className="pt-2">
+                    {loadingBookings ? (
+                      <div className="flex justify-center py-4"><LoadingSpinner size="sm" /></div>
+                    ) : (
+                      <BookingManagement bookings={bookings} onUpdate={fetchBookings} />
+                    )}
+                  </CardContent>
+                )}
               </Card>
             </div>
           </main>
         </div>
       ) : (
-        // Desktop: Persistent Sidebar on Right
         <SidebarProvider defaultOpen={true}>
           <div className="flex min-h-screen w-full">
             <AdminSidebar />
-            <main className="flex-1 overflow-y-auto w-full">
-              <div className="p-8 w-full">
-
-                {/* Header */}
-                <div className="mb-8">
-                  <h1 className="text-3xl font-bold mb-2 text-gradient-luxury">
-                    {t({ ar: "مرحباً بك في لوحة التحكم", en: "Welcome to Dashboard" })}
-                  </h1>
-                  <p className="text-muted-foreground">
-                    {t({ ar: "نظرة عامة على أداء نظامك", en: "Overview of your system performance" })}
-                  </p>
-                </div>
-
-                {/* Financial Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <main className="flex-1 overflow-y-auto transition-all duration-300">
+              <div className="p-6 max-w-[1600px] mx-auto">
+                {/* Financial Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   <BigStatCard
                     title={t({ ar: "الأرباح", en: "Profits" })}
-                    value={`${stats.profits || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
+                    value={`${stats.profits || 0} ${currency}`}
                     icon={TrendingUp}
                     colorClass="bg-gradient-to-br from-emerald-500 to-emerald-600"
                   />
                   <BigStatCard
                     title={t({ ar: "في انتظار الدفع", en: "Pending Payment" })}
-                    value={`${stats.pendingPayments || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
+                    value={`${stats.pendingPayments || 0} ${currency}`}
                     icon={Clock}
                     colorClass="bg-gradient-to-br from-amber-500 to-amber-600"
                   />
                   <BigStatCard
-                    title={t({ ar: "إجمالي قيمة الطلبات", en: "Total Bookings Value" })}
-                    value={`${stats.totalBookingsValue || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
+                    title={t({ ar: "إجمالي قيمة الطلبات", en: "Total Orders Value" })}
+                    value={`${stats.totalBookingsValue || 0} ${currency}`}
                     icon={FileText}
                     colorClass="bg-gradient-to-br from-sky-500 to-sky-600"
                   />
                   <BigStatCard
                     title={t({ ar: "الخسائر", en: "Losses" })}
-                    value={`${stats.losses || 0} ${t({ ar: "ر.س", en: "SAR" })}`}
+                    value={`${stats.losses || 0} ${currency}`}
                     icon={TrendingDown}
                     colorClass="bg-gradient-to-br from-rose-500 to-rose-600"
                   />
                 </div>
 
-                {/* Stats Grid - Detailed */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   <StatCard
                     title={t({ ar: "إجمالي الحجوزات", en: "Total Bookings" })}
                     value={stats.totalBookings}
@@ -502,21 +493,30 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                {/* Recent Bookings */}
+                {/* Recent Bookings - Collapsible */}
                 <Card className="card-luxury">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="w-5 h-5" />
-                      {t({ ar: "أحدث الحجوزات", en: "Recent Bookings" })}
-                    </CardTitle>
+                  <CardHeader className="pb-3">
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-between p-0 h-auto hover:bg-transparent"
+                      onClick={() => setShowRecentBookings(!showRecentBookings)}
+                    >
+                      <CardTitle className="flex items-center gap-2 text-base">
+                        <FileText className="w-5 h-5" />
+                        {t({ ar: "أحدث الحجوزات", en: "Recent Bookings" })}
+                      </CardTitle>
+                      {showRecentBookings ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </Button>
                   </CardHeader>
-                  <CardContent>
-                    {loadingBookings ? (
-                      <div className="flex justify-center py-8"><LoadingSpinner size="md" /></div>
-                    ) : (
-                      <BookingManagement bookings={bookings} onUpdate={fetchBookings} />
-                    )}
-                  </CardContent>
+                  {showRecentBookings && (
+                    <CardContent className="pt-0">
+                      {loadingBookings ? (
+                        <div className="flex justify-center py-8"><LoadingSpinner size="md" /></div>
+                      ) : (
+                        <BookingManagement bookings={bookings} onUpdate={fetchBookings} />
+                      )}
+                    </CardContent>
+                  )}
                 </Card>
               </div>
             </main>
